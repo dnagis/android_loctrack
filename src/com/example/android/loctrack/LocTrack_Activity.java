@@ -6,6 +6,8 @@ adb install out/target/product/mido/system/app/LocTrack/LocTrack.apk
 
 
 pm grant com.example.android.loctrack android.permission.ACCESS_FINE_LOCATION
+* 
+sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT from loc;"
 
  */
 
@@ -28,12 +30,15 @@ import android.location.LocationManager;
 
 
 
+
+
 public class LocTrack_Activity extends Activity implements LocationListener {
 	
 	public LocationManager mLocationManager;		
 	private static final int MIN_TIME = 10 * 1000; //long: minimum time interval between location updates, in milliseconds
     private static final int MIN_DIST = 0; //float: minimum distance between location updates, in meters
-
+	private BaseDeDonnees maBDD;
+	
     /**
      * Called with the activity is first created.
      */
@@ -52,6 +57,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
 		
+		maBDD = new BaseDeDonnees(this);		
 		
 		//foreground service pour importance (am package-importance com.example.android.hellogps) à 125
 		startForegroundService(new Intent(this, ForegroundService.class));
@@ -73,7 +79,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
     @Override	
     public void onLocationChanged(Location location) {
         Log.d("LocTrack", location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
-        //maBDD.logFix(location.getTime()/1000, location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude());   
+        maBDD.logFix(location.getTime()/1000, location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude());   
     }
         
 	@Override
