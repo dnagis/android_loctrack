@@ -53,7 +53,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         View view = getLayoutInflater().inflate(R.layout.hello_activity, null);
         setContentView(view);
         
-        final Button button = findViewById(R.id.button_id);
+        final Button button = findViewById(R.id.button_1);
         
         if (first_onCreate == true) {
 			first_onCreate = false;
@@ -78,12 +78,13 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 		
 	}
     
-    public void ActionPressBouton(View v) {
+    public void ActionPressBouton_1(View v) {
 		Log.d("LocTrack", "press bouton");
+		stopService(new Intent(this, ForegroundService.class));
 	}
 	
 	
-		/**
+	/**
 	 *
 	 * MainActivity implements LocationListener --> il faut les 4 méthodes 
 	 * 

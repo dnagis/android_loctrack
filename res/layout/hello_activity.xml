@@ -28,10 +28,10 @@
     
     
      <Button
-     android:id="@+id/button_id"
+     android:id="@+id/button_1"
      android:layout_height="wrap_content"
      android:layout_width="wrap_content"
-     android:text="@string/self_destruct"
-     android:onClick="ActionPressBouton" />
+     android:text="@string/btn_1"
+     android:onClick="ActionPressBouton_1" />
 
 </RelativeLayout>  

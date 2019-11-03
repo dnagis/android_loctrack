@@ -17,6 +17,6 @@
 <resources>
 
     <string name="hello_activity_text_text">Hello, World!</string>
-    <string name="self_destruct">TxtButton</string>
+    <string name="btn_1">StopService</string>
 
 </resources>
