@@ -31,7 +31,7 @@ public class ForegroundService extends Service {
     
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-		//Log.d("vvnx", "ForegroundService onStartCommand");
+		Log.d("vvnx", "ForegroundService onStartCommand");
 		
 		//https://developer.android.com/training/notify-user/channels
         int importance = NotificationManager.IMPORTANCE_DEFAULT;

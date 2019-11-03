@@ -4,10 +4,11 @@
 adb uninstall com.example.android.loctrack
 adb install out/target/product/mido/system/app/LocTrack/LocTrack.apk
 
-
 pm grant com.example.android.loctrack android.permission.ACCESS_FINE_LOCATION
-* 
+ 
 sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT from loc;"
+ 
+am stop-service com.example.android.loctrack/.ForegroundService
 
  */
 
@@ -60,6 +61,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 		maBDD = new BaseDeDonnees(this);		
 		
 		//foreground service pour importance (am package-importance com.example.android.hellogps) à 125
+		//ne pas oublier l'entrée <service android:name=".ForegroundService" /> dans le manifest
 		startForegroundService(new Intent(this, ForegroundService.class));
 
 
