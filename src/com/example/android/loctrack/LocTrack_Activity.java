@@ -40,6 +40,8 @@ public class LocTrack_Activity extends Activity implements LocationListener {
     private static final int MIN_DIST = 0; //float: minimum distance between location updates, in meters
 	private BaseDeDonnees maBDD;
 	
+	boolean first_onCreate = true;
+	
     /**
      * Called with the activity is first created.
      */
@@ -53,9 +55,19 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         
         final Button button = findViewById(R.id.button_id);
         
+        if (first_onCreate == true) {
+			first_onCreate = false;
+			lancement();
+		} 
         
-        
-        mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+
+
+    }
+    
+    public void lancement() {
+		
+		mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
 		
 		maBDD = new BaseDeDonnees(this);		
@@ -63,9 +75,8 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 		//foreground service pour importance (am package-importance com.example.android.hellogps) à 125
 		//ne pas oublier l'entrée <service android:name=".ForegroundService" /> dans le manifest
 		startForegroundService(new Intent(this, ForegroundService.class));
-
-
-    }
+		
+	}
     
     public void ActionPressBouton(View v) {
 		Log.d("LocTrack", "press bouton");
