@@ -21,7 +21,8 @@
      to come from a domain that you own or have control over. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.loctrack">
-    <application android:label="Loctrack II started nov. 2019!">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <application android:label="Loctrack II">
         <activity android:name="LocTrack_Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
