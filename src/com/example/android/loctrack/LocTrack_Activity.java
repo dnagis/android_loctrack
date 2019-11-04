@@ -6,7 +6,7 @@ adb install out/target/product/mido/system/app/LocTrack/LocTrack.apk
 
 pm grant com.example.android.loctrack android.permission.ACCESS_FINE_LOCATION
  
-sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT from loc;"
+sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT, SENT from loc;"
  
 am stop-service com.example.android.loctrack/.ForegroundService
 
