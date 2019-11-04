@@ -39,6 +39,8 @@ import android.os.SystemClock;
 
 public class LocTrack_Activity extends Activity implements LocationListener {
 	
+	private static final String TAG = "LocTrack";
+	
 	public LocationManager mLocationManager;		
 	private static final int LOC_MIN_TIME = 10 * 1000; //long: minimum time interval between location updates, in milliseconds
     private static final int LOC_MIN_DIST = 0; //float: minimum distance between location updates, in meters
@@ -56,7 +58,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-		Log.d("LocTrack", "LocTrack_Activity onCreate");
+		Log.d(TAG, "LocTrack_Activity onCreate");
         super.onCreate(savedInstanceState);
 
         // Set the layout for this activity.  You can find it res/layout/hello_activity.xml
@@ -68,7 +70,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         
         //https://stackoverflow.com/questions/456211/activity-restart-on-rotation-android
         if(savedInstanceState == null){
-			Log.d("LocTrack", "savedInstanceState est null , on lance...");
+			Log.d(TAG, "savedInstanceState est null , on lance...");
             launch_le_bousin();
         }
         
@@ -112,7 +114,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 	}
     
     public void ActionPressBouton_1(View v) {
-		Log.d("LocTrack", "press bouton");
+		Log.d(TAG, "press bouton");
 		stopService(new Intent(this, ForegroundService.class));
 	}
 	
@@ -125,7 +127,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 	 **/    
     @Override	
     public void onLocationChanged(Location location) {
-        Log.d("LocTrack", location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
+        Log.d(TAG, location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
         maBDD.logFix(location.getTime()/1000, location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude());   
     }
         

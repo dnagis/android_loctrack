@@ -15,6 +15,8 @@ import android.util.Log;
 
 public class ForegroundService extends Service {
 	
+	private static final String TAG = "LocTrack";
+	
 	Notification mNotification;
 
 
@@ -26,12 +28,12 @@ public class ForegroundService extends Service {
     
     @Override
     public void onCreate() {
-		//Log.d("vvnx", "ForegroundService onCreate");
+		//Log.d(TAG, "ForegroundService onCreate");
     }
     
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.d("vvnx", "ForegroundService onStartCommand");
+		Log.d(TAG, "ForegroundService onStartCommand");
 		
 		//https://developer.android.com/training/notify-user/channels
         int importance = NotificationManager.IMPORTANCE_DEFAULT;

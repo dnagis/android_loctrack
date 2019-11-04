@@ -42,20 +42,20 @@ import android.location.LocationManager;
 
 public class AlarmHttp extends Service {
 	
-	//private static final String TAG = "LocTrack";
+	private static final String TAG = "LocTrack";
 	
 	public static long launchTimestamp;
 	
  
     @Override
     public void onCreate() {
-		Log.d("LocTrack", "onCreate dans AlarmHttp");			
+		Log.d(TAG, "onCreate dans AlarmHttp");			
     }
     
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 		
-		Log.d("LocTrack", "OnStartCommand dans AlarmHttp");				
+		Log.d(TAG, "OnStartCommand dans AlarmHttp");				
 		
 		//POST Request, déporté dans AsyncTask sinon erreuur runtime android.os.NetworkOnMainThreadException
 		//new PostRequestTask().execute();	
@@ -65,7 +65,7 @@ public class AlarmHttp extends Service {
 
     @Override
     public void onDestroy() {		
-		Log.d("LocTrack", "OnDestroy");
+		Log.d(TAG, "OnDestroy");
 		stopSelf();		
 	 }
 	 
