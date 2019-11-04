@@ -29,6 +29,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.os.SystemClock;
+
 
 
 
@@ -36,17 +40,23 @@ import android.location.LocationManager;
 public class LocTrack_Activity extends Activity implements LocationListener {
 	
 	public LocationManager mLocationManager;		
-	private static final int MIN_TIME = 10 * 1000; //long: minimum time interval between location updates, in milliseconds
-    private static final int MIN_DIST = 0; //float: minimum distance between location updates, in meters
+	private static final int LOC_MIN_TIME = 10 * 1000; //long: minimum time interval between location updates, in milliseconds
+    private static final int LOC_MIN_DIST = 0; //float: minimum distance between location updates, in meters
 	private BaseDeDonnees maBDD;
 	
-	boolean first_onCreate = true;
+    //en dessous de 60s: W AlarmManager: Suspiciously short interval 30000 millis; expanding to 60 seconds
+    private static final long ALRM_SYNC_INTVL_MS = 60 * 1000;
+    private PendingIntent mAlarmSender;
+    private AlarmManager mAlarmManager;
+	
+
 	
     /**
      * Called with the activity is first created.
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+		Log.d("LocTrack", "LocTrack_Activity onCreate");
         super.onCreate(savedInstanceState);
 
         // Set the layout for this activity.  You can find it res/layout/hello_activity.xml
@@ -55,22 +65,45 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         
         final Button button = findViewById(R.id.button_1);
         
-        if (first_onCreate == true) {
-			first_onCreate = false;
-			lancement();
-		} 
+        
+        //https://stackoverflow.com/questions/456211/activity-restart-on-rotation-android
+        if(savedInstanceState == null){
+			Log.d("LocTrack", "savedInstanceState est null , on lance...");
+            launch_le_bousin();
+        }
+        
+
         
 
 
 
     }
     
-    public void lancement() {
+    public void launch_le_bousin() {
 		
 		mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
+		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_MIN_TIME, LOC_MIN_DIST, this);
 		
-		maBDD = new BaseDeDonnees(this);		
+		maBDD = new BaseDeDonnees(this);
+		
+		// Create a PendingIntent to trigger a startService() for AlarmDwnldVvnx
+        mAlarmSender = PendingIntent.getService(  // set up an intent for a call to a service (voir dev guide intents à "Using a pending intent")
+            this,  // the current context
+            0,  // request code (not used)
+            new Intent (this, AlarmHttp.class),  // A new Service intent 'c'est un intent explicite'
+            0   // flags (none are required for a service)
+        );
+        // Gets the handle to the system alarm service
+        mAlarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);        
+        long firstAlarmTime = SystemClock.elapsedRealtime();        
+        mAlarmManager.setRepeating(
+                AlarmManager.ELAPSED_REALTIME_WAKEUP, // based on time since last wake up
+                firstAlarmTime,  // sends the first alarm immediately
+                ALRM_SYNC_INTVL_MS,  // repeats every XX
+                mAlarmSender  // when the alarm goes off, sends this Intent
+            );	
+		
+			
 		
 		//foreground service pour importance (am package-importance com.example.android.hellogps) à 125
 		//ne pas oublier l'entrée <service android:name=".ForegroundService" /> dans le manifest
