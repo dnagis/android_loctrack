@@ -1,5 +1,3 @@
-
-
 package com.example.android.loctrack;
 
 import android.app.Service;
@@ -36,6 +34,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 
+import android.database.sqlite.SQLiteDatabase;
+
 
 
 
@@ -46,16 +46,25 @@ public class AlarmHttp extends Service {
 	
 	public static long launchTimestamp;
 	
+	private BaseDeDonnees maBDD;
+	
  
     @Override
     public void onCreate() {
-		Log.d(TAG, "onCreate dans AlarmHttp");			
+		Log.d(TAG, "onCreate dans AlarmHttp");	
+		maBDD = new BaseDeDonnees(this);		
     }
     
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 		
-		Log.d(TAG, "OnStartCommand dans AlarmHttp");				
+		Log.d(TAG, "OnStartCommand dans AlarmHttp");
+		
+		//SQLiteDatabase bdd = maBDD.getWritableDatabase();	
+		
+		int unsent_rows_n = maBDD.get_number_of_rows();		
+		
+		Log.d(TAG, "nombre d'unsent rows = " + unsent_rows_n);	
 		
 		//POST Request, déporté dans AsyncTask sinon erreuur runtime android.os.NetworkOnMainThreadException
 		//new PostRequestTask().execute();	

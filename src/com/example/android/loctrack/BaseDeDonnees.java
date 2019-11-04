@@ -3,11 +3,12 @@ package com.example.android.loctrack;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.Cursor;
 
 import android.content.ContentValues;
 
 
-//sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC from loc;"
+//sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT, SENT from loc;"
 
 public class BaseDeDonnees extends SQLiteOpenHelper {
 
@@ -40,5 +41,11 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 		values.put("ACC", acc);
 		values.put("ALT", alt);
 		bdd.insert("loc", null, values);
+	}
+	
+	public int get_number_of_rows() {
+		bdd = this.getWritableDatabase();
+		Cursor cursor = bdd.query("loc", null, "SENT = 0", null, null, null, null);
+		return cursor.getCount();
 	}
 }
