@@ -30,9 +30,6 @@
             </intent-filter>
         </activity>
     <service android:name=".ForegroundService" />
-    <service
-            android:name=".AlarmHttp"
-            android:exported="true">
-    </service>
+    <service android:name=".AlarmHttp" />
     </application>
 </manifest>
