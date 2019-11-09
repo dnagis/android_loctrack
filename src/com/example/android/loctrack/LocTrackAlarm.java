@@ -62,13 +62,16 @@ public class LocTrackAlarm extends Service {
 		
 		//SQLiteDatabase bdd = maBDD.getWritableDatabase();	
 		
-		int unsent_rows_n = maBDD.get_number_of_rows();			
-		Log.d(TAG, "nombre d'unsent rows = " + unsent_rows_n);	
+		//int unsent_rows_n = maBDD.get_number_of_rows();			
+		//Log.d(TAG, "nombre d'unsent rows = " + unsent_rows_n);	
 		
 		maBDD.dummy_get_rows();
 		
+		
+		
+		
 		//POST Request, déporté dans AsyncTask sinon erreuur runtime android.os.NetworkOnMainThreadException
-		//new PostRequestTask().execute();	
+		new PostRequestTask().execute();	
 				
 		return START_NOT_STICKY;
 	}
@@ -83,6 +86,44 @@ public class LocTrackAlarm extends Service {
 	public IBinder onBind(Intent intent) {
       // We don't provide binding, so return null
       return null;
+	}
+	
+	
+	private class PostRequestTask extends AsyncTask<Void,Void,Void> {
+		//https://alvinalexander.com/android/asynctask-examples-parameters-callbacks-executing-canceling
+    
+	    @Override
+	    protected Void doInBackground(Void... params) {
+			String error_code = "HTTP_REPLY_NON_INITIALISEE";
+			
+			
+			try {	
+			URL url = new URL("http://5.135.183.126:8050/post_loc");
+			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setDoOutput(true);
+			urlConnection.setRequestMethod("POST");
+			urlConnection.setRequestProperty("Content-Type","application/json");
+			urlConnection.setRequestProperty("charset", "utf-8");
+			DataOutputStream out = new DataOutputStream(urlConnection.getOutputStream());
+			//out.write(jsonEnvoi.toString().getBytes("iso-8859-15"));
+//			String mon_json = "{\"lat\":\"" + lastLat + "\",\"long\":\"" + lastLong + "\",\"fixtime\":\"" +   fixtime/1000 +          "\"}";
+			String mon_json = "{\"lat\":\"43.1111\",\"long\":\"3.1111\",\"fixtime\":\"1573289999\"}";
+			Log.d(TAG, "le json qu'on send= " + mon_json);
+			out.writeBytes(mon_json);
+			out.flush();
+			out.close();
+			error_code = urlConnection.getResponseMessage();
+			Log.d(TAG, "Vincent reponse getResponseMessage= " + error_code);	
+	
+	        } catch (MalformedURLException me) {
+	            Log.d(TAG, "MalformedURLException: " + me);
+	
+	        } catch (IOException ioe) {
+	            Log.d(TAG, "IOException: " + ioe);
+	        }
+			return null;
+	    }
+
 	}
 	
 	
