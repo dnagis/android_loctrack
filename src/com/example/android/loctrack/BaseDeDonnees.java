@@ -56,28 +56,30 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 		return cursor.getCount();
 	}
 	
-	public void dummy_get_rows() {
+	public JSONObject dummy_get_rows() {
 		bdd = this.getWritableDatabase();
-		Cursor cursor = bdd.query("loc", null, "SENT = 0", null, null, null, "ID DESC", "2");
-		        JSONObject monJsonFinal = new JSONObject();
+		Cursor cursor = bdd.query("loc", null, "SENT = 0", null, null, null, "ID DESC", "1");
+		JSONObject unJsonIntermediaire = new JSONObject();
        
        if (cursor != null) { 
         while (cursor.moveToNext()) {
             try {
-                JSONObject unJsonIntermediaire = new JSONObject();
+                //JSONObject unJsonIntermediaire = new JSONObject();
                 unJsonIntermediaire.put("ID",cursor.getLong(0));
-                unJsonIntermediaire.put("FIXTIME",cursor.getLong(1));
-                unJsonIntermediaire.put("LATITUDE",cursor.getDouble(2));
-                unJsonIntermediaire.put("LONGITUDE",cursor.getDouble(3));
+                unJsonIntermediaire.put("fixtime",cursor.getLong(1));
+                unJsonIntermediaire.put("lat",cursor.getDouble(2));
+                unJsonIntermediaire.put("long",cursor.getDouble(3));
                 unJsonIntermediaire.put("ACCURACY",cursor.getFloat(4));                
                 unJsonIntermediaire.put("ALTITUDE",cursor.getLong(5));
-
-                monJsonFinal.accumulate("LOCS", unJsonIntermediaire);
-                Log.d(TAG, "Vincent: tronche de ton JSON="+unJsonIntermediaire.toString());
+                Log.d(TAG, "Vincent: tronche de ton JSON intermediaire"+unJsonIntermediaire.toString());
+                //monJsonFinal.accumulate("LOCS", unJsonIntermediaire); //pour avoir {"LOCS":{"ID":17,"FIXTIME":1573293943,"LATITUDE":43.9...},{"ID":18,"FIXTIME":1573293963,"LATITUDE":43.9...}}
+                //Log.d(TAG, "Vincent: tronche de ton JSON intermediaire après accumulate="+unJsonIntermediaire.toString());
             } catch (JSONException e) { }
         }
-        Log.d(TAG, "Vincent: tronche de ton JSON Final="+monJsonFinal.toString());
-	}
+        
+        //Log.d(TAG, "Vincent: tronche de ton JSON Final="+monJsonFinal.toString());
+		}
+		return unJsonIntermediaire;
 	}
 	
 	
