@@ -68,7 +68,8 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         final Button button = findViewById(R.id.button_1);
         
         
-        //https://stackoverflow.com/questions/456211/activity-restart-on-rotation-android
+        /*Passer dans une méthode ce que tu veux ne faire qu'une fois au démarrage
+        https://stackoverflow.com/questions/456211/activity-restart-on-rotation-android*/
         if(savedInstanceState == null){
 			Log.d(TAG, "savedInstanceState est null , on lance...");
             launch_le_bousin();
@@ -81,6 +82,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 
     }
     
+    
     public void launch_le_bousin() {
 		
 		mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -92,7 +94,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         mAlarmSender = PendingIntent.getService(  // set up an intent for a call to a service (voir dev guide intents à "Using a pending intent")
             this,  // the current context
             0,  // request code (not used)
-            new Intent (this, AlarmHttp.class),  // A new Service intent 'c'est un intent explicite'
+            new Intent (this, LocTrackAlarm.class),  // A new Service intent 'c'est un intent explicite'
             0   // flags (none are required for a service)
         );
         // Gets the handle to the system alarm service

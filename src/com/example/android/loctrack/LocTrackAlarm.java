@@ -40,7 +40,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 
 
-public class AlarmHttp extends Service {
+public class LocTrackAlarm extends Service {
 	
 	private static final String TAG = "LocTrack";
 	
