@@ -51,20 +51,21 @@ public class LocTrackAlarm extends Service {
  
     @Override
     public void onCreate() {
-		Log.d(TAG, "onCreate dans AlarmHttp");	
+		Log.d(TAG, "onCreate dans LocTrackAlarm");	
 		maBDD = new BaseDeDonnees(this);		
     }
     
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 		
-		Log.d(TAG, "OnStartCommand dans AlarmHttp");
+		Log.d(TAG, "OnStartCommand dans LocTrackAlarm");
 		
 		//SQLiteDatabase bdd = maBDD.getWritableDatabase();	
 		
-		int unsent_rows_n = maBDD.get_number_of_rows();		
-		
+		int unsent_rows_n = maBDD.get_number_of_rows();			
 		Log.d(TAG, "nombre d'unsent rows = " + unsent_rows_n);	
+		
+		maBDD.dummy_get_rows();
 		
 		//POST Request, déporté dans AsyncTask sinon erreuur runtime android.os.NetworkOnMainThreadException
 		//new PostRequestTask().execute();	

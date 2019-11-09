@@ -90,7 +90,10 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 		
 		maBDD = new BaseDeDonnees(this);
 		
-		// Create a PendingIntent to trigger a startService() for AlarmDwnldVvnx
+		/**Create a PendingIntent to trigger a startService()
+		 * Attention mec! le nom de la classe à démarrer doit être déclarée dans le manifest.xml! <service android:name=".NomDeLaClasse" />
+		 * L'AlrmManager ne se fend pas d'une erreur s'il ne trouve pas la classe!
+		 ***/ 
         mAlarmSender = PendingIntent.getService(  // set up an intent for a call to a service (voir dev guide intents à "Using a pending intent")
             this,  // the current context
             0,  // request code (not used)
@@ -109,8 +112,8 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 		
 			
 		
-		//foreground service pour importance (am package-importance com.example.android.hellogps) à 125
-		//ne pas oublier l'entrée <service android:name=".ForegroundService" /> dans le manifest
+		/**foreground service pour importance (am package-importance com.example.android.hellogps) à 125
+		ne pas oublier l'entrée <service android:name=".ForegroundService" /> dans le manifest**/
 		startForegroundService(new Intent(this, ForegroundService.class));
 		
 	}

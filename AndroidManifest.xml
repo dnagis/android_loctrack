@@ -30,6 +30,6 @@
             </intent-filter>
         </activity>
     <service android:name=".ForegroundService" />
-    <service android:name=".AlarmHttp" />
+    <service android:name=".LocTrackAlarm" />
     </application>
 </manifest>

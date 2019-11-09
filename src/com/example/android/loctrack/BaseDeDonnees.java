@@ -1,16 +1,23 @@
 package com.example.android.loctrack;
 
 import android.content.Context;
+import android.util.Log;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 
 import android.content.ContentValues;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 //sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT, SENT from loc;"
 
 public class BaseDeDonnees extends SQLiteOpenHelper {
+	
+	private static final String TAG = "LocTrack";
 
     private static final String DATABASE_NAME = "loc.db";
     private static final int DATABASE_VERSION = 1;
@@ -48,4 +55,30 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 		Cursor cursor = bdd.query("loc", null, "SENT = 0", null, null, null, null);
 		return cursor.getCount();
 	}
+	
+	public void dummy_get_rows() {
+		bdd = this.getWritableDatabase();
+		Cursor cursor = bdd.query("loc", null, "SENT = 0", null, null, null, "ID DESC", "2");
+		        JSONObject monJsonFinal = new JSONObject();
+       
+       if (cursor != null) { 
+        while (cursor.moveToNext()) {
+            try {
+                JSONObject unJsonIntermediaire = new JSONObject();
+                unJsonIntermediaire.put("ID",cursor.getLong(0));
+                unJsonIntermediaire.put("FIXTIME",cursor.getLong(1));
+                unJsonIntermediaire.put("LATITUDE",cursor.getDouble(2));
+                unJsonIntermediaire.put("LONGITUDE",cursor.getDouble(3));
+                unJsonIntermediaire.put("ACCURACY",cursor.getFloat(4));                
+                unJsonIntermediaire.put("ALTITUDE",cursor.getLong(5));
+
+                monJsonFinal.accumulate("LOCS", unJsonIntermediaire);
+                Log.d(TAG, "Vincent: tronche de ton JSON="+unJsonIntermediaire.toString());
+            } catch (JSONException e) { }
+        }
+        Log.d(TAG, "Vincent: tronche de ton JSON Final="+monJsonFinal.toString());
+	}
+	}
+	
+	
 }
