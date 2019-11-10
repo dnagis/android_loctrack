@@ -27,6 +27,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -67,11 +70,11 @@ public class LocTrackAlarm extends Service {
 		
 		//maBDD.dummy_get_rows();
 		
-		JSONObject unJson = maBDD.dummy_get_rows();
+		JSONArray leJson = maBDD.getJsonOfLocs();
 		
 		
 		//POST Request, déporté dans AsyncTask sinon erreuur runtime android.os.NetworkOnMainThreadException
-		new PostRequestTask().execute(unJson);	
+		new PostRequestTask().execute(leJson);	
 				
 		return START_NOT_STICKY;
 	}
@@ -89,11 +92,11 @@ public class LocTrackAlarm extends Service {
 	}
 	
 	
-	private class PostRequestTask extends AsyncTask<JSONObject,Void,Void> {
+	private class PostRequestTask extends AsyncTask<JSONArray,Void,Void> {
 		//https://alvinalexander.com/android/asynctask-examples-parameters-callbacks-executing-canceling
     
 	    @Override
-	    protected Void doInBackground(JSONObject... params) {
+	    protected Void doInBackground(JSONArray... params) {
 			String error_code = "HTTP_REPLY_NON_INITIALISEE";
 			
 			
@@ -108,7 +111,7 @@ public class LocTrackAlarm extends Service {
 			//out.write(jsonEnvoi.toString().getBytes("iso-8859-15"));
 //			String mon_json = "{\"lat\":\"" + lastLat + "\",\"long\":\"" + lastLong + "\",\"fixtime\":\"" +   fixtime/1000 +          "\"}";
 //			String mon_json = "{\"lat\":\"43.1111\",\"long\":\"3.1111\",\"fixtime\":\"1573289999\"}";
-			JSONObject mon_json = params[0];
+			JSONArray mon_json = params[0];
 			Log.d(TAG, "le json qu'on send= " + mon_json.toString());
 			out.writeBytes(mon_json.toString());
 			out.flush();
