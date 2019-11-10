@@ -58,8 +58,7 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 	
 	public JSONArray getJsonOfLocs() {
 		bdd = this.getWritableDatabase();
-		Cursor cursor = bdd.query("loc", null, "SENT = 0", null, null, null, "ID DESC", "2");
-		//JSONObject unJsonIntermediaire = new JSONObject();
+		Cursor cursor = bdd.query("loc", null, "SENT = 0", null, null, null, "ID DESC", null);
 		JSONArray jsonFinal = new JSONArray();
        
        if (cursor != null) { 
@@ -72,16 +71,35 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
                 unJsonIntermediaire.put("long",cursor.getDouble(3));
                 //unJsonIntermediaire.put("ACCURACY",cursor.getFloat(4));                
                 //unJsonIntermediaire.put("ALTITUDE",cursor.getLong(5));
-                Log.d(TAG, "getJsonOfLocs: JSON intermediaire=" + unJsonIntermediaire.toString());
+                
+                //Log.d(TAG, "getJsonOfLocs: JSON intermediaire=" + unJsonIntermediaire.toString());
                 jsonFinal.put(unJsonIntermediaire);
-                Log.d(TAG, "getJsonOfLocs: JSON final après put=" + jsonFinal.toString());
+                //Log.d(TAG, "getJsonOfLocs: JSON final après put=" + jsonFinal.toString());
                 unJsonIntermediaire = null;
             } catch (JSONException e) { }
         }
         
-        Log.d(TAG, "getJsonOfLocs: tronche de ton JSON Final="+jsonFinal.toString());
+        //Log.d(TAG, "getJsonOfLocs: tronche de ton JSON Final="+jsonFinal.toString());
 		}
 		return jsonFinal;
+	}
+	
+	public void markAsSent(JSONArray le_json) {
+		Log.d(TAG, "markAsSent le json = " + le_json.toString());
+		int i;
+		for(i=0;i<le_json.length();i++){
+                try {
+                    JSONObject uneLoc = new JSONObject(le_json.getString(i));
+                    Log.d(TAG, "markAsSent: Loop sur un item du JSON=" + uneLoc.toString());
+                    ContentValues newValues = new ContentValues();
+                    newValues.put("SENT", "1");
+                    String strFilter = "ID=" + uneLoc.get("id");
+                    bdd.update("loc", newValues, strFilter, null);
+                } catch (JSONException e) { }
+            }
+		
+		
+		
 	}
 	
 	

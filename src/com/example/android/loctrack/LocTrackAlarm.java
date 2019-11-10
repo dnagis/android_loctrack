@@ -91,14 +91,17 @@ public class LocTrackAlarm extends Service {
       return null;
 	}
 	
-	
-	private class PostRequestTask extends AsyncTask<JSONArray,Void,Void> {
+	//AsyncTask<JSONArray,Void,String> --> Le premier: JSONArray: ce qui est passé à doInBackground le dernier: String: ce qui est passé à onPostExecute 
+	private class PostRequestTask extends AsyncTask<JSONArray,Void,JSONArray> {
 		//https://alvinalexander.com/android/asynctask-examples-parameters-callbacks-executing-canceling
+		
+		
     
 	    @Override
-	    protected Void doInBackground(JSONArray... params) {
+	    protected JSONArray doInBackground(JSONArray... params) {
 			String error_code = "HTTP_REPLY_NON_INITIALISEE";
-			
+			JSONArray mon_json = params[0];
+			Log.d(TAG, "le json qu'on send= " + mon_json.toString());
 			
 			try {	
 			URL url = new URL("http://5.135.183.126:8050/post_loc");
@@ -111,8 +114,8 @@ public class LocTrackAlarm extends Service {
 			//out.write(jsonEnvoi.toString().getBytes("iso-8859-15"));
 //			String mon_json = "{\"lat\":\"" + lastLat + "\",\"long\":\"" + lastLong + "\",\"fixtime\":\"" +   fixtime/1000 +          "\"}";
 //			String mon_json = "{\"lat\":\"43.1111\",\"long\":\"3.1111\",\"fixtime\":\"1573289999\"}";
-			JSONArray mon_json = params[0];
-			Log.d(TAG, "le json qu'on send= " + mon_json.toString());
+			
+			
 			out.writeBytes(mon_json.toString());
 			out.flush();
 			out.close();
@@ -125,8 +128,21 @@ public class LocTrackAlarm extends Service {
 	        } catch (IOException ioe) {
 	            Log.d(TAG, "IOException: " + ioe);
 	        }
-			return null;
+	        
+	        if (error_code.equals("OK")) {
+				return mon_json;
+			} else { 
+				JSONArray un_json_vide = new JSONArray();
+				return un_json_vide;
+			}
 	    }
+	    
+	    @Override
+	    protected void onPostExecute(JSONArray le_json)	{
+			Log.d(TAG, "onPostExecute -- le_json passé = " + le_json.toString());
+			if (le_json.length() != 0) maBDD.markAsSent(le_json);
+		}
+       
 
 	}
 	
