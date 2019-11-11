@@ -50,15 +50,10 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 		bdd.insert("loc", null, values);
 	}
 	
-	public int get_number_of_rows() {
-		bdd = this.getWritableDatabase();
-		Cursor cursor = bdd.query("loc", null, "SENT = 0", null, null, null, null);
-		return cursor.getCount();
-	}
-	
+
 	public JSONArray getJsonOfLocs() {
 		bdd = this.getWritableDatabase();
-		Cursor cursor = bdd.query("loc", null, "SENT = 0", null, null, null, "ID DESC", null);
+		Cursor cursor = bdd.query("loc", null, "SENT = 0", null, null, null, null, null);
 		JSONArray jsonFinal = new JSONArray();
        
        if (cursor != null) { 
@@ -85,12 +80,12 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 	}
 	
 	public void markAsSent(JSONArray le_json) {
-		Log.d(TAG, "markAsSent le json = " + le_json.toString());
+		//Log.d(TAG, "markAsSent le json = " + le_json.toString());
 		int i;
 		for(i=0;i<le_json.length();i++){
                 try {
                     JSONObject uneLoc = new JSONObject(le_json.getString(i));
-                    Log.d(TAG, "markAsSent: Loop sur un item du JSON=" + uneLoc.toString());
+                    //Log.d(TAG, "markAsSent: Loop sur un item du JSON=" + uneLoc.toString());
                     ContentValues newValues = new ContentValues();
                     newValues.put("SENT", "1");
                     String strFilter = "ID=" + uneLoc.get("id");

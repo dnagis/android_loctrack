@@ -65,13 +65,7 @@ public class LocTrackAlarm extends Service {
 		
 		//SQLiteDatabase bdd = maBDD.getWritableDatabase();	
 		
-		//int unsent_rows_n = maBDD.get_number_of_rows();			
-		//Log.d(TAG, "nombre d'unsent rows = " + unsent_rows_n);	
-		
-		//maBDD.dummy_get_rows();
-		
-		JSONArray leJson = maBDD.getJsonOfLocs();
-		
+		JSONArray leJson = maBDD.getJsonOfLocs();		
 		
 		//POST Request, déporté dans AsyncTask sinon erreuur runtime android.os.NetworkOnMainThreadException
 		new PostRequestTask().execute(leJson);	
@@ -120,7 +114,7 @@ public class LocTrackAlarm extends Service {
 			out.flush();
 			out.close();
 			error_code = urlConnection.getResponseMessage();
-			Log.d(TAG, "Vincent reponse getResponseMessage= " + error_code);	
+			//Log.d(TAG, "Vincent reponse getResponseMessage= " + error_code);	
 	
 	        } catch (MalformedURLException me) {
 	            Log.d(TAG, "MalformedURLException: " + me);
@@ -139,7 +133,7 @@ public class LocTrackAlarm extends Service {
 	    
 	    @Override
 	    protected void onPostExecute(JSONArray le_json)	{
-			Log.d(TAG, "onPostExecute -- le_json passé = " + le_json.toString());
+			//Log.d(TAG, "onPostExecute -- le_json passé = " + le_json.toString());
 			if (le_json.length() != 0) maBDD.markAsSent(le_json);
 		}
        
