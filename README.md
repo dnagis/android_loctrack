@@ -22,12 +22,16 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 
 # # ToDo list
 
-* Démarrage session / arrêt
+* Arrêt session
+	- dialog de confirmation
+	- arrêt "propre" -> arrêt de l'alarm manager, du location service, du foreground service
+	- si plusieurs session successive: les points non envoyés de la dernière session me donnent des temps d'envois astronomiques
 	- arrêt: un dernier essai d'envoi de la totalité des rows, si échec passer sent à 9 (pas 0)
-	- boutons start/stop avec confirmation pour chacun
-* Démarrage : check réseau + time sur réseau
-	- si l'heure du tel est fausse+++ le fixtime envoyé est foireux: dans données GNSS j'ai qqchose?
 * Affichage main screen: time dernier envoi successful, dernière latlng
+* Démarrage session 
+	- boutons start/stop avec confirmation pour chacun
+	- si l'heure du tel est fausse+++ le fixtime envoyé est foireux: dans données GNSS j'ai qqchose? sinon check réseau via une route
+	sur mon serveur...
 * Les points plus anciens que... ne doivent pas être prioritaires pour l'envoi: c'est le dernier qui prime	
 * Identifiant unique pour du multiutilisateur
 	- a l'installation la première fois?
