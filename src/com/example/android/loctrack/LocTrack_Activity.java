@@ -47,7 +47,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 	private BaseDeDonnees maBDD;
 	
     //en dessous de 60s: W AlarmManager: Suspiciously short interval 30000 millis; expanding to 60 seconds
-    private static final long ALRM_SYNC_INTVL_MS = 60 * 1000;
+    private static final long ALRM_SYNC_INTVL_MS = 60 * 1000; //60 secondes possible
     private PendingIntent mAlarmSender;
     private AlarmManager mAlarmManager;
 	
@@ -121,10 +121,13 @@ public class LocTrack_Activity extends Activity implements LocationListener {
     
     //bouton stop
     public void ActionPressBouton_1(View v) {
-		//Log.d(TAG, "press bouton");
+		//On arrête tout le background...
 		mLocationManager.removeUpdates(this);
 		mAlarmManager.cancel(mAlarmSender);
 		stopService(new Intent(this, ForegroundService.class));
+		
+		//passer SENT=2 quand SENT=0 sinon prochaine fois j'aurais des SENT=0 de la session d'avant dans mes bdd query
+		maBDD.forgetUnsent(); 
 	}
 	
 	
@@ -136,7 +139,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 	 **/    
     @Override	
     public void onLocationChanged(Location location) {
-        Log.d(TAG, location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
+        //Log.d(TAG, location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
         maBDD.logFix(location.getTime()/1000, location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude());   
     }
         

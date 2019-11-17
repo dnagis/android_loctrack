@@ -8,11 +8,12 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 
 * LocTrack_Activity.java:
 	- onCreate() -> une seule fois la première fois (if(savedInstanceState == null)) -> launch_le_bousin qui:
-		- crée la base de données pour les locs maBDD = new BaseDeDonnees(this); -> onCreate() de cette classe
-		- Lance un locationManager -> dans sa callback onLocationChanged() écrit dans la base de données la loc (BaseDeDonnees.java)
-		- Lance un AlarmManager pour déclencher LocTrackAlarm régulièrement
+		- Crée la base de données pour les locs maBDD = new BaseDeDonnees(this); -> onCreate() de cette classe
+		- Crée si n'existe pas un locationManager -> dans sa callback onLocationChanged() écrit dans la base de données la loc (BaseDeDonnees.java)
+		- Crée si n'existe pas un AlarmManager pour déclencher LocTrackAlarm régulièrement
 		- Lance un foregroundservice (startForegroundService) dont le seul et unique but et de maintenir l'importance
-	- le bouton stop arrête le foreground service
+	- le bouton stop arrête {alrm,location}Manager et le foreground service, et passe les non envoyés à SENT=2 (pour pas qu'ils soient
+	pris en compte dans une session ultérieure).
 		
 	
 * LocTrackAlarm.java: 
@@ -48,3 +49,4 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 * icones
 	- foreground service
 	- appli
+* Nettoyage de la bdd

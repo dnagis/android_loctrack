@@ -91,10 +91,15 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
                     String strFilter = "ID=" + uneLoc.get("id");
                     bdd.update("loc", newValues, strFilter, null);
                 } catch (JSONException e) { }
-            }
-		
-		
-		
+            }		
+	}
+	
+	//passer les SENT=0 à SENT=2 (arrêt de session, pour ne pas de retrouver dans la session d'après avec des SENT=0)
+	public void forgetUnsent() {
+                    ContentValues newValues = new ContentValues();
+                    newValues.put("SENT", "2");
+                    String strFilter = "SENT=0";
+                    bdd.update("loc", newValues, strFilter, null);
 	}
 	
 	
