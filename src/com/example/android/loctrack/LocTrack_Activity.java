@@ -66,8 +66,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         setContentView(view);
         
         final Button button = findViewById(R.id.button_1);
-        
-        
+                
         /*Passer dans une méthode ce que tu veux ne faire qu'une fois au démarrage
         https://stackoverflow.com/questions/456211/activity-restart-on-rotation-android*/
         if(savedInstanceState == null){
@@ -85,7 +84,8 @@ public class LocTrack_Activity extends Activity implements LocationListener {
     
     public void launch_le_bousin() {
 		
-		mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		// Si c'est la première fois qu'on passe on récup une handle vers le location manager
+		if(mLocationManager == null) mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_MIN_TIME, LOC_MIN_DIST, this);
 		
 		maBDD = new BaseDeDonnees(this);
@@ -100,8 +100,9 @@ public class LocTrack_Activity extends Activity implements LocationListener {
             new Intent (this, LocTrackAlarm.class),  // A new Service intent 'c'est un intent explicite'
             0   // flags (none are required for a service)
         );
-        // Gets the handle to the system alarm service
-        mAlarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);        
+        
+        // Si c'est la première fois qu'on passe on récup une handle vers l alarm manager
+        if(mAlarmManager == null) mAlarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);        
         long firstAlarmTime = SystemClock.elapsedRealtime();        
         mAlarmManager.setRepeating(
                 AlarmManager.ELAPSED_REALTIME_WAKEUP, // based on time since last wake up
@@ -118,8 +119,11 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 		
 	}
     
+    //bouton stop
     public void ActionPressBouton_1(View v) {
-		Log.d(TAG, "press bouton");
+		//Log.d(TAG, "press bouton");
+		mLocationManager.removeUpdates(this);
+		mAlarmManager.cancel(mAlarmSender);
 		stopService(new Intent(this, ForegroundService.class));
 	}
 	
@@ -132,7 +136,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 	 **/    
     @Override	
     public void onLocationChanged(Location location) {
-        //Log.d(TAG, location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
+        Log.d(TAG, location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
         maBDD.logFix(location.getTime()/1000, location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude());   
     }
         
