@@ -21,6 +21,8 @@ import android.view.WindowManager;
 
 import android.widget.Button;
 import android.util.Log;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 
 import android.content.Context;
 import android.content.Intent;
@@ -52,7 +54,8 @@ public class LocTrack_Activity extends Activity implements LocationListener {
     private AlarmManager mAlarmManager;
     
     private boolean runningSession; //default to false
-	
+    private Drawable default_btn;
+	private Button btn_start, btn_stop;
 
 	
     /**
@@ -67,8 +70,9 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         View view = getLayoutInflater().inflate(R.layout.hello_activity, null);
         setContentView(view);
         
-        final Button btn_start = findViewById(R.id.btn_start);
-        final Button btn_stop = findViewById(R.id.btn_stop);
+        btn_start = findViewById(R.id.btn_start);
+        default_btn = btn_start.getBackground();
+        btn_stop = findViewById(R.id.btn_stop);
                 
 
         /*Au départ j'avais ça: ça lançait automatiquement dans onCreate() mais qu'une première fois, pas aux passages ultérieurs
@@ -120,6 +124,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 		startForegroundService(new Intent(this, ForegroundService.class));
 		
 		runningSession = true;
+		btn_start.setBackgroundColor(Color.BLUE);
 		
 	}
 	
@@ -142,6 +147,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 		maBDD.forgetUnsent(); 
 		
 		runningSession = false;
+		btn_start.setBackgroundDrawable(default_btn);
 	}
 	
 	
