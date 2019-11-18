@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import android.widget.Button;
+import android.widget.TextView;
 import android.util.Log;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -56,6 +57,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
     private boolean runningSession; //default to false
     private Drawable default_btn;
 	private Button btn_start, btn_stop;
+	private TextView textview_1;
 
 	
     /**
@@ -73,7 +75,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         btn_start = findViewById(R.id.btn_start);
         default_btn = btn_start.getBackground();
         btn_stop = findViewById(R.id.btn_stop);
-                
+        textview_1 = findViewById(R.id.textview_1);       
 
         /*Au départ j'avais ça: ça lançait automatiquement dans onCreate() mais qu'une première fois, pas aux passages ultérieurs
          * marchait très bien. Après je suis passé au lancement avec un bouton.  
@@ -82,11 +84,6 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 			Log.d(TAG, "savedInstanceState est null , on lance...");
             launch_le_bousin();
         }*/
-
-        
-
-
-
     }
     
     
@@ -161,6 +158,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
     public void onLocationChanged(Location location) {
         //Log.d(TAG, location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
         maBDD.logFix(location.getTime()/1000, location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude());   
+        textview_1.setText(""+location.getTime()/1000);
     }
         
 	@Override

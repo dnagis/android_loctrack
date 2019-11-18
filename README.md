@@ -28,7 +28,7 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 	vérifier fonctionnement essais reallife
 	- dialog de confirmation (appui bouton par erreur???)
 * UI: 
-	- time dernier envoi successful, dernière latlng -> dynamique si possible (comme dans tv_vvnx)
+	- time dernier envoi successful, dernière latlng -> dynamique si possible (comme dans tv_vvnx) https://www.androidauthority.com/android-ui-views-1018249/
 	- dialog de confirmation
 * Démarrage session: 	
 	- si l'heure du tel est fausse+++ le fixtime envoyé est foireux: dans données GNSS j'ai qqchose? sinon check réseau via une route
