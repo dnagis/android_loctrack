@@ -23,16 +23,12 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 
 # # ToDo list
 
-* Arrêt session
-	- si plusieurs sessions successives: les points non envoyés de la dernière session faussent la session d'après (rxtime)
-	vérifier fonctionnement essais reallife
-	- dialog de confirmation (appui bouton par erreur???)
-* UI: 
-	- time dernier envoi successful, dernière latlng -> dynamique si possible (comme dans tv_vvnx) https://www.androidauthority.com/android-ui-views-1018249/
-	- dialog de confirmation
-* Démarrage session: 	
-	- si l'heure du tel est fausse+++ le fixtime envoyé est foireux: dans données GNSS j'ai qqchose? sinon check réseau via une route
-	sur mon serveur...
+* Le nom du fichier de layout (res/layout/hello_activity.xml) est vraiment moche!!!
+* UI (https://www.androidauthority.com/android-ui-views-1018249/)
+	- dialog de confirmation pour stop
+	- vérifier ce qui se passe quand on appuie par erreur sur des boutons
+* Fixtime: location.getTime() -> provenance: system ou GNSS??
+	- essayé: fausse heure sur tel + empêché de récup heure sur réseau -> les fixtimes restent à la bonne heure!
 * Les points plus anciens que... ne doivent pas être prioritaires pour l'envoi: c'est le dernier qui prime	
 * Identifiant unique pour du multi-utilisateur
 	- a l'installation la première fois?
@@ -40,7 +36,7 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 * Niveau Batterie et Signal GSM
 	- ajouter
 	- faire un howto pour chaque nouvel ajout ultérieur (car ça modifie aussi serveur et front...)
-* Un menu pour des taches alternes
+* Un menu pour des tâches annexes
 * Données récoltées en bluetooth (esp32 / capteur)
 * Avoir le délai de la requête POST: possible dans l'AsyncTask? Si oui une bdd spéciale pour ça? Utilité?
 * Choix fréquence requestLocations / fréquence POST

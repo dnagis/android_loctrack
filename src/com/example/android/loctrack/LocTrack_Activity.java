@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.util.Log;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import java.text.SimpleDateFormat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -57,7 +58,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
     private boolean runningSession; //default to false
     private Drawable default_btn;
 	private Button btn_start, btn_stop;
-	private TextView textview_1;
+	private TextView textview_1, textview_2;
 
 	
     /**
@@ -76,6 +77,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         default_btn = btn_start.getBackground();
         btn_stop = findViewById(R.id.btn_stop);
         textview_1 = findViewById(R.id.textview_1);       
+        textview_2 = findViewById(R.id.textview_2); 
 
         /*Au départ j'avais ça: ça lançait automatiquement dans onCreate() mais qu'une première fois, pas aux passages ultérieurs
          * marchait très bien. Après je suis passé au lancement avec un bouton.  
@@ -158,7 +160,9 @@ public class LocTrack_Activity extends Activity implements LocationListener {
     public void onLocationChanged(Location location) {
         //Log.d(TAG, location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
         maBDD.logFix(location.getTime()/1000, location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude());   
-        textview_1.setText(""+location.getTime()/1000);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM HH:mm:ss");
+        textview_1.setText(sdf.format(location.getTime()));
+        textview_2.setText(""+location.getLatitude()+","+location.getLongitude()+" -- "+getFormattedLocationInDegree(location.getLatitude(), location.getLongitude()));
     }
         
 	@Override
@@ -171,6 +175,27 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
+	}
+	
+	public static String getFormattedLocationInDegree(double latitude, double longitude) {
+        int latSeconds = (int) Math.round(latitude * 3600);
+        int latDegrees = latSeconds / 3600;
+        latSeconds = Math.abs(latSeconds % 3600);
+        int latMinutes = latSeconds / 60;
+        latSeconds %= 60;
+
+        int longSeconds = (int) Math.round(longitude * 3600);
+        int longDegrees = longSeconds / 3600;
+        longSeconds = Math.abs(longSeconds % 3600);
+        int longMinutes = longSeconds / 60;
+        longSeconds %= 60;
+        String latDegree = latDegrees >= 0 ? "N" : "S";
+        String lonDegrees = longDegrees >= 0 ? "E" : "W";
+
+        return  Math.abs(latDegrees) + "°" + latMinutes + "'" + latSeconds
+                + "\"" + latDegree +" "+ Math.abs(longDegrees) + "°" + longMinutes
+                + "'" + longSeconds + "\"" + lonDegrees;
+
 	}
 }
 

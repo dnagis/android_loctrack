@@ -16,7 +16,8 @@
 
 <resources>
 
-    <string name="textview1_text">En attente de fix...</string>
+    <string name="textview1_text">Time: En attente de fix...</string>
+    <string name="textview2_text">Loc: En attente de fix...</string>
     <string name="btn_start">Lancer</string>
     <string name="btn_stop">Stop</string>
 
