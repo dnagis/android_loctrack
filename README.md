@@ -23,6 +23,7 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 
 # # ToDo list
 
+* Si tu appuies plusieurs fois sur stop -> plante (locationManager null, peut être au début???) protéger
 * Le nom du fichier de layout (res/layout/hello_activity.xml) est vraiment moche!!!
 * UI (https://www.androidauthority.com/android-ui-views-1018249/)
 	- dialog de confirmation pour stop
