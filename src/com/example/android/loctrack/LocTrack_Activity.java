@@ -50,6 +50,8 @@ public class LocTrack_Activity extends Activity implements LocationListener {
     private static final long ALRM_SYNC_INTVL_MS = 60 * 1000; //60 secondes possible
     private PendingIntent mAlarmSender;
     private AlarmManager mAlarmManager;
+    
+    private boolean runningSession; //default to false
 	
 
 	
@@ -68,13 +70,14 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         final Button btn_start = findViewById(R.id.btn_start);
         final Button btn_stop = findViewById(R.id.btn_stop);
                 
-        /*Passer dans une méthode ce que tu veux ne faire qu'une fois au démarrage
-        https://stackoverflow.com/questions/456211/activity-restart-on-rotation-android*/
+
+        /*Au départ j'avais ça: ça lançait automatiquement dans onCreate() mais qu'une première fois, pas aux passages ultérieurs
+         * marchait très bien. Après je suis passé au lancement avec un bouton.  
+        https://stackoverflow.com/questions/456211/activity-restart-on-rotation-android
         if(savedInstanceState == null){
 			Log.d(TAG, "savedInstanceState est null , on lance...");
             launch_le_bousin();
-        }
-        
+        }*/
 
         
 
@@ -112,17 +115,19 @@ public class LocTrack_Activity extends Activity implements LocationListener {
                 mAlarmSender  // when the alarm goes off, sends this Intent
             );	
 		
-			
-		
 		/**foreground service pour importance (am package-importance com.example.android.hellogps) à 125
 		ne pas oublier l'entrée <service android:name=".ForegroundService" /> dans le manifest**/
 		startForegroundService(new Intent(this, ForegroundService.class));
+		
+		runningSession = true;
 		
 	}
 	
 	//bouton start
     public void ActionPressBouton_start(View v) {
 		Log.d(TAG, "press bouton start");
+		if (!runningSession) launch_le_bousin();
+
 	}
     
     //bouton stop
@@ -135,6 +140,8 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 		
 		//passer SENT=2 quand SENT=0 sinon prochaine fois j'aurais des SENT=0 de la session d'avant dans mes bdd query
 		maBDD.forgetUnsent(); 
+		
+		runningSession = false;
 	}
 	
 	
