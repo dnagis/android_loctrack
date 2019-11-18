@@ -96,10 +96,12 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 	
 	//passer les SENT=0 à SENT=2 (arrêt de session, pour ne pas de retrouver dans la session d'après avec des SENT=0)
 	public void forgetUnsent() {
+             if (bdd != null)  { //au début avant les premières location: bdd pas encore remplies, si on lance stop ici: ça plante                  
                     ContentValues newValues = new ContentValues();
                     newValues.put("SENT", "2");
                     String strFilter = "SENT=0";
                     bdd.update("loc", newValues, strFilter, null);
+				}
 	}
 	
 	

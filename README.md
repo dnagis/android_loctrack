@@ -13,7 +13,7 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 		- Crée si n'existe pas un AlarmManager pour déclencher LocTrackAlarm régulièrement
 		- Lance un foregroundservice (startForegroundService) dont le seul et unique but et de maintenir l'importance
 	- le bouton stop arrête {alrm,location}Manager et le foreground service, et passe les non envoyés à SENT=2 (pour pas qu'ils soient
-	pris en compte dans une session ultérieure).
+	pris en compte dans une session ultérieure, mais en gardant l'info qu'ils ont pas été envoyés -SENT à 2 et pas à 1-).
 		
 	
 * LocTrackAlarm.java: 
@@ -24,19 +24,18 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 # # ToDo list
 
 * Arrêt session
-	- dialog de confirmation
-	- arrêt "propre" -> arrêt de l'alarm manager, du location service, du foreground service
-	- si plusieurs session successive: les points non envoyés de la dernière session me donnent des temps d'envois astronomiques
-	- arrêt: un dernier essai d'envoi de la totalité des rows, si échec passer sent à 9 (pas 0)
+	- si plusieurs sessions successives: les points non envoyés de la dernière session faussent la session d'après (rxtime)
+	vérifier fonctionnement essais reallife
+	- dialog de confirmation (appui bouton par erreur???)
 * Affichage main screen: 
 	- feedback démarrage session (bouton start modif text et couleur)
 	- time dernier envoi successful, dernière latlng
 * Démarrage session 
-	- boutons start/stop avec confirmation pour chacun
+	- boutons start avec confirmation pour chacun
 	- si l'heure du tel est fausse+++ le fixtime envoyé est foireux: dans données GNSS j'ai qqchose? sinon check réseau via une route
 	sur mon serveur...
 * Les points plus anciens que... ne doivent pas être prioritaires pour l'envoi: c'est le dernier qui prime	
-* Identifiant unique pour du multiutilisateur
+* Identifiant unique pour du multi-utilisateur
 	- a l'installation la première fois?
 	- commencer par modèle pour ne pas se prendre la tête?
 * Niveau Batterie et Signal GSM

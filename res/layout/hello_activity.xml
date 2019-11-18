@@ -28,10 +28,18 @@
     
     
      <Button
-     android:id="@+id/button_1"
+     android:id="@+id/btn_start"
      android:layout_height="wrap_content"
      android:layout_width="wrap_content"
-     android:text="@string/btn_1"
-     android:onClick="ActionPressBouton_1" />
+     android:text="@string/btn_start"
+     android:onClick="ActionPressBouton_start" />
+     
+     <Button
+     android:id="@+id/btn_stop"
+     android:layout_height="wrap_content"
+     android:layout_width="wrap_content"
+     android:layout_alignParentRight="true"
+     android:text="@string/btn_stop"
+     android:onClick="ActionPressBouton_stop" />
 
 </RelativeLayout>  

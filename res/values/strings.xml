@@ -17,6 +17,7 @@
 <resources>
 
     <string name="hello_activity_text_text">Hello, World!</string>
-    <string name="btn_1">StopService</string>
+    <string name="btn_start">Lancer</string>
+    <string name="btn_stop">Stop</string>
 
 </resources>

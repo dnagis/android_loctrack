@@ -65,7 +65,8 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         View view = getLayoutInflater().inflate(R.layout.hello_activity, null);
         setContentView(view);
         
-        final Button button = findViewById(R.id.button_1);
+        final Button btn_start = findViewById(R.id.btn_start);
+        final Button btn_stop = findViewById(R.id.btn_stop);
                 
         /*Passer dans une méthode ce que tu veux ne faire qu'une fois au démarrage
         https://stackoverflow.com/questions/456211/activity-restart-on-rotation-android*/
@@ -118,9 +119,15 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 		startForegroundService(new Intent(this, ForegroundService.class));
 		
 	}
+	
+	//bouton start
+    public void ActionPressBouton_start(View v) {
+		Log.d(TAG, "press bouton start");
+	}
     
     //bouton stop
-    public void ActionPressBouton_1(View v) {
+    public void ActionPressBouton_stop(View v) {
+		Log.d(TAG, "press bouton stop");
 		//On arrête tout le background...
 		mLocationManager.removeUpdates(this);
 		mAlarmManager.cancel(mAlarmSender);
