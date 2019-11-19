@@ -24,6 +24,8 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 # # ToDo list
 
 * Si tu appuies plusieurs fois sur stop -> plante (locationManager null, peut être au début???) protéger
+* Quand je m'arrête: j'ai pas envie que ma bdd soit bloatée de points les uns à côté des autres... Quand points super proches, il
+ne faudrait que le dernier, ou alors noter de ne pas envoyer les autres? (ne pas envoyer des paquets de points archi proches).
 * Le nom du fichier de layout (res/layout/hello_activity.xml) est vraiment moche!!!
 * UI (https://www.androidauthority.com/android-ui-views-1018249/)
 	- dialog de confirmation pour stop
@@ -34,7 +36,7 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 * Identifiant unique pour du multi-utilisateur
 	- a l'installation la première fois?
 	- commencer par modèle pour ne pas se prendre la tête?
-* Niveau Batterie et Signal GSM
+* Niveau Batterie / Signal GSM / altitude accuracy (?)
 	- ajouter
 	- faire un howto pour chaque nouvel ajout ultérieur (car ça modifie aussi serveur et front...)
 * Un menu pour des tâches annexes
