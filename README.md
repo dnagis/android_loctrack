@@ -48,3 +48,7 @@ ne faudrait que le dernier, ou alors noter de ne pas envoyer les autres? (ne pas
 	- foreground service
 	- appli
 * Nettoyage de la bdd
+
+# # Littérature
+
+* Grosse discussion C2C post simon gauthier https://forum.camptocamp.org/t/geolocalisation-smartphone/249306/67
