@@ -2,6 +2,7 @@ package com.example.android.loctrack;
 
 import android.content.Context;
 import android.util.Log;
+import java.util.List;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
@@ -11,6 +12,14 @@ import android.content.ContentValues;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.telephony.CellInfo;
+import android.telephony.CellInfoCdma;
+import android.telephony.CellInfoGsm;
+import android.telephony.CellInfoLte;
+import android.telephony.CellInfoWcdma;
+import android.telephony.TelephonyManager;
+import android.telephony.SignalStrength;
 
 
 //sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT, SENT from loc;"
@@ -27,15 +36,18 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
     private static final String CREATE_BDD_NET = "CREATE TABLE net (ID INTEGER PRIMARY KEY AUTOINCREMENT, STARTTIME INTEGER NOT NULL, ENDTIME INTEGER NOT NULL, NLOCS INTEGER NOT NULL, LAT REAL NOT NULL, LONG REAL NOT NULL)";
     
     private SQLiteDatabase bdd;
+    private TelephonyManager telphMgr;
 
     public BaseDeDonnees(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        telphMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_BDD_MAIN);
         db.execSQL(CREATE_BDD_NET);
+        
     }
 
     @Override
@@ -109,10 +121,56 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 	
 	public void logNet(long starttime, long endtime, JSONArray le_json){
 		double lat = 0.0 , lng = 0.0;
+
+		int cellid = -1; //par défault
+        int lac = -1;
+        int mnc = -1;
+        int mcc = -1;
+        String radio = "unknown";
+        
 		bdd = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		
 		//Log.d(TAG, "mabdd logNet");
+		
+		//Partie GSM
+		//opencellid mon token 3105a1d662ebac 100/jour max https://unwiredlabs.com/api#documentation
+		//SignalStrength forceSignal = telphMgr.getSignalStrength(); //api 29 only...		
+	    List<CellInfo> cellinfo = telphMgr.getAllCellInfo();
+	   //dans le métro quand cartes sims activées mais aucun signal ça plante... check (cellinfo != null)-pas suffisant finalement size marche bien
+		if (cellinfo.size() > 0) {
+			CellInfo cell0 = cellinfo.get(0);
+
+			if (cell0 instanceof CellInfoGsm) {
+				cellid = ((CellInfoGsm) cell0).getCellIdentity().getCid();
+				lac = ((CellInfoGsm) cell0).getCellIdentity().getLac();
+				mnc = ((CellInfoGsm) cell0).getCellIdentity().getMnc();
+				mcc = ((CellInfoGsm) cell0).getCellIdentity().getMcc();
+				radio = "GSM";
+			} else if (cell0 instanceof CellInfoCdma) { //2g ??
+				cellid = ((CellInfoCdma) cell0).getCellIdentity().getBasestationId();
+				radio = "CDMA";
+			} else if (cell0 instanceof CellInfoLte) { //4G??
+				cellid = ((CellInfoLte) cell0).getCellIdentity().getCi();
+				mnc = ((CellInfoLte) cell0).getCellIdentity().getMnc();
+				mcc = ((CellInfoLte) cell0).getCellIdentity().getMcc();
+				lac = ((CellInfoLte) cell0).getCellIdentity().getTac();
+				radio = "LTE";
+			} else if (cell0 instanceof CellInfoWcdma) { //3G? UMTS?
+				cellid = ((CellInfoWcdma) cell0).getCellIdentity().getCid();
+				lac = ((CellInfoWcdma) cell0).getCellIdentity().getLac();
+				mnc = ((CellInfoWcdma) cell0).getCellIdentity().getMnc();
+				mcc = ((CellInfoWcdma) cell0).getCellIdentity().getMcc();
+				radio = "UMTS";
+			}
+
+		} else {
+			cellid = 0; //code pour se rappeler que cellid est vide (genre métro)
+		}
+		
+		Log.d(TAG, "mabdd logNet " + "cellid=" + cellid + "  mnc=" + mnc + "   mcc=" + mcc + "  lac=" + lac + "  radio=" + radio);
+		
+		
 		
 		int index = idx_of_biggest_fixtime(le_json);
 		
