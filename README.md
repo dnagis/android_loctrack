@@ -23,16 +23,21 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 
 # # ToDo list
 
+
+* Récolter des données réseau:
+	- Dans une bdd séparée de l'autre (autre table?)
+	- Avoir le délai de la requête POST: avec l'AsyncTask -> j'ai bien une nouvelle instance à chaque fois? identifiant unique.
+	- Données GSM: 2016 j'avais déjà qq chose comme ça: force du signal, nombre d'antennes, l'identifiant de l'antenne
 * Si tu appuies plusieurs fois sur stop -> plante (locationManager null, peut être au début???) protéger
-* Quand je m'arrête: j'ai pas envie que ma bdd soit bloatée de points les uns à côté des autres... Quand points super proches, il
-ne faudrait que le dernier, ou alors noter de ne pas envoyer les autres? (ne pas envoyer des paquets de points archi proches).
+* Détection pause/repart: quand je m'arrête: j'ai pas envie que ma bdd soit bloatée de points les uns à côté des autres... Quand points super proches, il
+ne faudrait que le dernier, ou alors noter de ne pas envoyer les autres? Il faudrait pouvoir utiliser une librairie géographique. Et le premier endpoint
+serait de détecter une pause. Quoi faire quand on la détecte: on verra après (modif de la fréquence des requetes GPS? Comment gérer les envois?).
 * Le nom du fichier de layout (res/layout/hello_activity.xml) est vraiment moche!!!
 * UI (https://www.androidauthority.com/android-ui-views-1018249/)
 	- dialog de confirmation pour stop
 	- vérifier ce qui se passe quand on appuie par erreur sur des boutons
 * Fixtime: location.getTime() -> provenance: system ou GNSS??
-	- essayé: fausse heure sur tel + empêché de récup heure sur réseau -> les fixtimes restent à la bonne heure!
-* Les points plus anciens que... ne doivent pas être prioritaires pour l'envoi: c'est le dernier qui prime	
+	- essayé: fausse heure sur tel + empêché de récup heure sur réseau -> les fixtimes restent à la bonne heure! -> noter dans le code et enlever ça d'ici
 * Identifiant unique pour du multi-utilisateur
 	- a l'installation la première fois?
 	- commencer par modèle pour ne pas se prendre la tête?
@@ -41,8 +46,7 @@ ne faudrait que le dernier, ou alors noter de ne pas envoyer les autres? (ne pas
 	- faire un howto pour chaque nouvel ajout ultérieur (car ça modifie aussi serveur et front...)
 * Un menu pour des tâches annexes
 * Données récoltées en bluetooth (esp32 / capteur)
-* Avoir le délai de la requête POST: possible dans l'AsyncTask? Si oui une bdd spéciale pour ça? Utilité?
-* Choix fréquence requestLocations / fréquence POST
+* UI: Permettre choix fréquence requestLocations / fréquence POST
 * Permissions check au startup: pour utilisation "commerciale"
 * icones
 	- foreground service
