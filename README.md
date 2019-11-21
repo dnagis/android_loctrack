@@ -27,16 +27,15 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 # # ToDo list
 
 
-* Récolter des données réseau:
-	- Données GSM: 2016 j'avais déjà qq chose comme ça: force du signal, nombre d'antennes, l'identifiant de l'antenne --> passer dans la bdd dans la table net.
-	- Sortir la loc.db sur un tel production build ce serait bien... ->  balancer un json sur une route de kimsufi?
+* Récolte des données network:
+	- Données GSM: dans BaseDeDonnees.java -> entrer dans la bdd
+	- Sortir la loc.db sur un tel production build ce serait bien... ->  balancer un json sur une route de kimsufi? une astuce sinon adb??
 * Détection pause/repart: quand je m'arrête: j'ai pas envie que ma bdd soit bloatée de points les uns à côté des autres... Quand points super proches, il
 ne faudrait que le dernier, ou alors noter de ne pas envoyer les autres? Il faudrait pouvoir utiliser une librairie géographique. Et le premier endpoint
 serait de détecter une pause. Quoi faire quand on la détecte: on verra après (modif de la fréquence des requetes GPS? Comment gérer les envois?).
 * Le nom du fichier de layout (res/layout/hello_activity.xml) est vraiment moche!!!
 * UI (https://www.androidauthority.com/android-ui-views-1018249/)
 	- dialog de confirmation pour stop
-	- vérifier ce qui se passe quand on appuie par erreur sur des boutons
 * Fixtime: location.getTime() -> provenance: system ou GNSS??
 	- essayé: fausse heure sur tel + empêché de récup heure sur réseau -> les fixtimes restent à la bonne heure! -> noter dans le code et enlever ça d'ici
 * Identifiant unique pour du multi-utilisateur

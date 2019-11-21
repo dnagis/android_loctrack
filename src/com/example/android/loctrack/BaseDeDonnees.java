@@ -134,7 +134,7 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 		//Log.d(TAG, "mabdd logNet");
 		
 		//Partie GSM
-		//opencellid mon token 3105a1d662ebac 100/jour max https://unwiredlabs.com/api#documentation
+		//opencellid gmail, mon token = 3105a1d662ebac max 100/jour https://unwiredlabs.com/api#documentation
 		//SignalStrength forceSignal = telphMgr.getSignalStrength(); //api 29 only...		
 	    List<CellInfo> cellinfo = telphMgr.getAllCellInfo();
 	   //dans le métro quand cartes sims activées mais aucun signal ça plante... check (cellinfo != null)-pas suffisant finalement size marche bien
