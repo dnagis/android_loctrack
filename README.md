@@ -26,7 +26,7 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 
 # # ToDo list
 
-
+* j'ai trois tonnes de points en double. Faut pas que je démarre plusieurs requetes http en même temps: faut un timeout 
 * Récolte des données network:
 	- Traquer les failures: voir chaque asynctask: n° unique pour voir si je les ai toutes (certaines pas finies?)
 	- Données GSM: dans BaseDeDonnees.java -> entrer dans la bdd
