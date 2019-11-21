@@ -19,15 +19,16 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 * LocTrackAlarm.java: 
 	- à chaque déclenchement d'Alarm dans le onStartCommand() 
 		- récupère un json des locs SENT=0 (getJsonOfLocs)
-		- lance une asyncTask requete POST http envoi du JSON, et à la fin (onPostExecute) passe à SENT=1 dans la BDD
+		- lance une asyncTask requete POST http envoi du JSON, et à la fin (onPostExecute) 
+			passe à SENT=1 les rows du json reçu par l'async task dans la table loc de la BDD
+			écrit dans la table net de la BDD les times de début et de fin de l'async, le nombre de locs, la latlng du fixtime le plus grand (donc la position la plus fraiche au moment
+			du début de l'envoi)
 
 # # ToDo list
 
 
 * Récolter des données réseau:
-	- Dans une bdd séparée de l'autre (autre table?)
-	- Avoir le délai de la requête POST: avec l'AsyncTask -> j'ai bien une nouvelle instance à chaque fois? identifiant unique.
-	- Données GSM: 2016 j'avais déjà qq chose comme ça: force du signal, nombre d'antennes, l'identifiant de l'antenne
+	- Données GSM: 2016 j'avais déjà qq chose comme ça: force du signal, nombre d'antennes, l'identifiant de l'antenne --> passer dans la bdd dans la table net.
 * Si tu appuies plusieurs fois sur stop -> plante (locationManager null, peut être au début???) protéger
 * Détection pause/repart: quand je m'arrête: j'ai pas envie que ma bdd soit bloatée de points les uns à côté des autres... Quand points super proches, il
 ne faudrait que le dernier, ou alors noter de ne pas envoyer les autres? Il faudrait pouvoir utiliser une librairie géographique. Et le premier endpoint

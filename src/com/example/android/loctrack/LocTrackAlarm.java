@@ -88,14 +88,16 @@ public class LocTrackAlarm extends Service {
 	//AsyncTask<JSONArray,Void,String> --> Le premier: JSONArray: ce qui est passé à doInBackground le dernier: String: ce qui est passé à onPostExecute 
 	private class PostRequestTask extends AsyncTask<JSONArray,Void,JSONArray> {
 		//https://alvinalexander.com/android/asynctask-examples-parameters-callbacks-executing-canceling
-		
+		long startTime, endTime;
 		
     
 	    @Override
 	    protected JSONArray doInBackground(JSONArray... params) {
 			String error_code = "HTTP_REPLY_NON_INITIALISEE";
 			JSONArray mon_json = params[0];
-			Log.d(TAG, "le json qu'on send= " + mon_json.toString());
+			startTime = System.currentTimeMillis();
+			Log.d(TAG, "PostRequestTask doInBackground le json qu'on send= " + mon_json.toString());
+			
 			
 			try {	
 			URL url = new URL("http://5.135.183.126:8050/post_loc");
@@ -134,11 +136,19 @@ public class LocTrackAlarm extends Service {
 	    @Override
 	    protected void onPostExecute(JSONArray le_json)	{
 			//Log.d(TAG, "onPostExecute -- le_json passé = " + le_json.toString());
-			if (le_json.length() != 0) maBDD.markAsSent(le_json);
+			endTime = System.currentTimeMillis();
+			//Log.d(TAG, "PostRequestTask startTime=" + startTime + "   endTime=" + endTime);
+			if (le_json.length() != 0) 
+				{
+					maBDD.markAsSent(le_json);
+					maBDD.logNet(startTime, endTime, le_json);
+					
+				}
 		}
-       
-
 	}
+	
+
+	
 	
 	
 

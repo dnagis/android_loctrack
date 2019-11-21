@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 
 //sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT, SENT from loc;"
+//sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(STARTTIME/1000, 'unixepoch', 'localtime'), datetime(ENDTIME/1000, 'unixepoch', 'localtime'), ENDTIME - STARTTIME, NLOCS from net;"
 
 public class BaseDeDonnees extends SQLiteOpenHelper {
 	
@@ -22,7 +23,8 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "loc.db";
     private static final int DATABASE_VERSION = 1;
     //private static final String CREATE_BDD = "CREATE TABLE loc (ID INTEGER PRIMARY KEY AUTOINCREMENT, TIME INTEGER NOT NULL, CELLID INTEGER NOT NULL, MCC INTEGER NOT NULL, MNC INTEGER NOT NULL, LAC INTEGER NOT NULL, RADIO TEXT NOT NULL)";
-    private static final String CREATE_BDD = "CREATE TABLE loc (ID INTEGER PRIMARY KEY AUTOINCREMENT, FIXTIME INTEGER NOT NULL, LAT REAL NOT NULL, LONG REAL NOT NULL, ACC REAL NOT NULL, ALT REAL NOT NULL, SENT INTEGER DEFAULT 0)";
+    private static final String CREATE_BDD_MAIN = "CREATE TABLE loc (ID INTEGER PRIMARY KEY AUTOINCREMENT, FIXTIME INTEGER NOT NULL, LAT REAL NOT NULL, LONG REAL NOT NULL, ACC REAL NOT NULL, ALT REAL NOT NULL, SENT INTEGER DEFAULT 0)";
+    private static final String CREATE_BDD_NET = "CREATE TABLE net (ID INTEGER PRIMARY KEY AUTOINCREMENT, STARTTIME INTEGER NOT NULL, ENDTIME INTEGER NOT NULL, NLOCS INTEGER NOT NULL, LAT REAL NOT NULL, LONG REAL NOT NULL)";
     
     private SQLiteDatabase bdd;
 
@@ -32,7 +34,8 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_BDD);
+        db.execSQL(CREATE_BDD_MAIN);
+        db.execSQL(CREATE_BDD_NET);
     }
 
     @Override
@@ -102,6 +105,52 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
                     String strFilter = "SENT=0";
                     bdd.update("loc", newValues, strFilter, null);
 				}
+	}
+	
+	public void logNet(long starttime, long endtime, JSONArray le_json){
+		double lat = 0.0 , lng = 0.0;
+		bdd = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		
+		//Log.d(TAG, "mabdd logNet");
+		
+		int index = idx_of_biggest_fixtime(le_json);
+		
+		try {
+			JSONObject locMaxFixtime = le_json.getJSONObject(index);		
+			lat = locMaxFixtime.getDouble("lat");
+			lng = locMaxFixtime.getDouble("long");
+		} catch (JSONException e) { }
+		
+		
+		values.put("STARTTIME", starttime);
+		values.put("ENDTIME", endtime);
+		values.put("NLOCS", le_json.length());
+		values.put("LAT", lat);
+		values.put("LONG", lng);
+		bdd.insert("net", null, values);
+	}
+	
+	
+	/*Quel est l'index dans le JSONArray de la loc avec le plus grand fixtime (donc le plus récent au moment de l'envoi, pour savoir où ça s'est passé*/
+	public int idx_of_biggest_fixtime(JSONArray le_json) {
+			int index_biggest_fixtime = 0;
+			long max_fixtime = 0;
+			
+			//Log.d(TAG, "mabdd idx_of_biggest_fixtime");
+			
+			for (int i=0 ; i<le_json.length() ; i++) {
+				try {
+					JSONObject oneItem = le_json.getJSONObject(i);
+					long current_fixtime = oneItem.getLong("fixtime");
+					if (current_fixtime > max_fixtime) 
+						{	
+							max_fixtime = current_fixtime;
+							index_biggest_fixtime = i;
+						}
+					} catch (JSONException e) { }
+			}
+			return index_biggest_fixtime;			
 	}
 	
 	
