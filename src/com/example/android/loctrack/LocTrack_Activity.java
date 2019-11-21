@@ -138,12 +138,12 @@ public class LocTrack_Activity extends Activity implements LocationListener {
     public void ActionPressBouton_stop(View v) {
 		Log.d(TAG, "press bouton stop");
 		//On arrête tout le background...
-		mLocationManager.removeUpdates(this);
-		mAlarmManager.cancel(mAlarmSender);
+		if(mLocationManager != null) mLocationManager.removeUpdates(this);
+		if(mAlarmManager != null) mAlarmManager.cancel(mAlarmSender);
 		stopService(new Intent(this, ForegroundService.class));
 		
 		//passer SENT=2 quand SENT=0 sinon prochaine fois j'aurais des SENT=0 de la session d'avant dans mes bdd query
-		maBDD.forgetUnsent(); 
+		if(maBDD != null) maBDD.forgetUnsent(); 
 		
 		runningSession = false;
 		btn_start.setBackgroundDrawable(default_btn);
