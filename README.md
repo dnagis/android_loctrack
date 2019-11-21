@@ -28,8 +28,9 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 
 
 * Récolte des données network:
+	- Traquer les failures: voir chaque asynctask: n° unique pour voir si je les ai toutes (certaines pas finies?)
 	- Données GSM: dans BaseDeDonnees.java -> entrer dans la bdd
-	- Sortir la loc.db sur un tel production build ce serait bien... ->  balancer un json sur une route de kimsufi? une astuce sinon adb??
+	- Sortir la loc.db sur un tel production build ce serait bien... ->  balancer un json sur une route de kimsufi? une astuce sinon adb?? ou un fichier txt sur la sdcard?
 * Détection pause/repart: quand je m'arrête: j'ai pas envie que ma bdd soit bloatée de points les uns à côté des autres... Quand points super proches, il
 ne faudrait que le dernier, ou alors noter de ne pas envoyer les autres? Il faudrait pouvoir utiliser une librairie géographique. Et le premier endpoint
 serait de détecter une pause. Quoi faire quand on la détecte: on verra après (modif de la fréquence des requetes GPS? Comment gérer les envois?).
