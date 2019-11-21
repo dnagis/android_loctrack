@@ -29,7 +29,7 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 
 * Récolter des données réseau:
 	- Données GSM: 2016 j'avais déjà qq chose comme ça: force du signal, nombre d'antennes, l'identifiant de l'antenne --> passer dans la bdd dans la table net.
-* Si tu appuies plusieurs fois sur stop -> plante (locationManager null, peut être au début???) protéger
+	- Sortir la loc.db sur un tel production build ce serait bien...
 * Détection pause/repart: quand je m'arrête: j'ai pas envie que ma bdd soit bloatée de points les uns à côté des autres... Quand points super proches, il
 ne faudrait que le dernier, ou alors noter de ne pas envoyer les autres? Il faudrait pouvoir utiliser une librairie géographique. Et le premier endpoint
 serait de détecter une pause. Quoi faire quand on la détecte: on verra après (modif de la fréquence des requetes GPS? Comment gérer les envois?).
@@ -42,7 +42,7 @@ serait de détecter une pause. Quoi faire quand on la détecte: on verra après 
 * Identifiant unique pour du multi-utilisateur
 	- a l'installation la première fois?
 	- commencer par modèle pour ne pas se prendre la tête?
-* Niveau Batterie / Signal GSM / altitude accuracy (?)
+* Niveau Batterie / altitude accuracy (?)
 	- ajouter
 	- faire un howto pour chaque nouvel ajout ultérieur (car ça modifie aussi serveur et front...)
 * Un menu pour des tâches annexes
