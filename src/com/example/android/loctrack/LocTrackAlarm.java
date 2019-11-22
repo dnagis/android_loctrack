@@ -103,6 +103,8 @@ public class LocTrackAlarm extends Service {
 			URL url = new URL("http://5.135.183.126:8050/post_loc");
 			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 			urlConnection.setDoOutput(true);
+			urlConnection.setConnectTimeout(10000); //ms https://stackoverflow.com/questions/2799938/httpurlconnection-timeout-settings 
+			urlConnection.setReadTimeout(10000); //https://docs.oracle.com/javase/7/docs/api/java/net/URLConnection.html#setReadTimeout(int)
 			urlConnection.setRequestMethod("POST");
 			urlConnection.setRequestProperty("Content-Type","application/json");
 			urlConnection.setRequestProperty("charset", "utf-8");
