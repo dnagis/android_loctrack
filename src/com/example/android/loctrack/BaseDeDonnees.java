@@ -22,7 +22,7 @@ import android.telephony.TelephonyManager;
 import android.telephony.SignalStrength;
 
 
-//sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT, SENT from loc;"
+//sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT, ALTACC, SENT from loc;"
 //sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select ASYNCID, datetime(STARTTIME/1000, 'unixepoch', 'localtime'), datetime(ENDTIME/1000, 'unixepoch', 'localtime'), ENDTIME - STARTTIME, HTTPREPLY, NLOCS from net;"
 
 public class BaseDeDonnees extends SQLiteOpenHelper {
@@ -32,7 +32,7 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "loc.db";
     private static final int DATABASE_VERSION = 1;
     //private static final String CREATE_BDD = "CREATE TABLE loc (ID INTEGER PRIMARY KEY AUTOINCREMENT, TIME INTEGER NOT NULL, CELLID INTEGER NOT NULL, MCC INTEGER NOT NULL, MNC INTEGER NOT NULL, LAC INTEGER NOT NULL, RADIO TEXT NOT NULL)";
-    private static final String CREATE_BDD_MAIN = "CREATE TABLE loc (ID INTEGER PRIMARY KEY AUTOINCREMENT, FIXTIME INTEGER NOT NULL, LAT REAL NOT NULL, LONG REAL NOT NULL, ACC REAL NOT NULL, ALT REAL NOT NULL, SENT INTEGER DEFAULT 0)";
+    private static final String CREATE_BDD_MAIN = "CREATE TABLE loc (ID INTEGER PRIMARY KEY AUTOINCREMENT, FIXTIME INTEGER NOT NULL, LAT REAL NOT NULL, LONG REAL NOT NULL, ACC REAL NOT NULL, ALT REAL NOT NULL, ALTACC REAL NOT NULL, SENT INTEGER DEFAULT 0)";
     //cette table "net" sert à monitorer le network, uniquement
     private static final String CREATE_BDD_NET = "CREATE TABLE net (ID INTEGER PRIMARY KEY AUTOINCREMENT, ASYNCID INTEGER NOT NULL, STARTTIME INTEGER NOT NULL, ENDTIME INTEGER NOT NULL, HTTPREPLY INTEGER NOT NULL, NLOCS INTEGER NOT NULL, LAT REAL NOT NULL, LONG REAL NOT NULL)";
     
@@ -55,7 +55,7 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
     
-    public void logFix(long fixtime, double lat, double lng, float acc, double alt){
+    public void logFix(long fixtime, double lat, double lng, float acc, double alt, float altacc){
 		bdd = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("FIXTIME", fixtime);
@@ -63,6 +63,7 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 		values.put("LONG", lng);
 		values.put("ACC", acc);
 		values.put("ALT", alt);
+		values.put("ALTACC", altacc);
 		bdd.insert("loc", null, values);
 	}
 	

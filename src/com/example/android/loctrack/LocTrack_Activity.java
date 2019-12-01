@@ -157,8 +157,8 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 	 **/    
     @Override	
     public void onLocationChanged(Location location) {
-        //Log.d(TAG, location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
-        maBDD.logFix(location.getTime()/1000, location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude());   
+        Log.d(TAG, location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getVerticalAccuracyMeters() + ",  "  + location.getTime());
+        maBDD.logFix(location.getTime()/1000, location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude(), location.getVerticalAccuracyMeters());   
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM HH:mm:ss");
         textview_1.setText(sdf.format(location.getTime()));
         textview_2.setText(""+location.getLatitude()+","+location.getLongitude()+" -- "+getFormattedLocationInDegree(location.getLatitude(), location.getLongitude()));
