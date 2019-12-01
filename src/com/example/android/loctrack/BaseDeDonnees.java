@@ -23,7 +23,7 @@ import android.telephony.SignalStrength;
 
 
 //sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT, SENT from loc;"
-//sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(STARTTIME/1000, 'unixepoch', 'localtime'), datetime(ENDTIME/1000, 'unixepoch', 'localtime'), ENDTIME - STARTTIME, NLOCS from net;"
+//sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select ASYNCID, datetime(STARTTIME/1000, 'unixepoch', 'localtime'), datetime(ENDTIME/1000, 'unixepoch', 'localtime'), ENDTIME - STARTTIME, HTTPREPLY, NLOCS from net;"
 
 public class BaseDeDonnees extends SQLiteOpenHelper {
 	
@@ -33,7 +33,8 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     //private static final String CREATE_BDD = "CREATE TABLE loc (ID INTEGER PRIMARY KEY AUTOINCREMENT, TIME INTEGER NOT NULL, CELLID INTEGER NOT NULL, MCC INTEGER NOT NULL, MNC INTEGER NOT NULL, LAC INTEGER NOT NULL, RADIO TEXT NOT NULL)";
     private static final String CREATE_BDD_MAIN = "CREATE TABLE loc (ID INTEGER PRIMARY KEY AUTOINCREMENT, FIXTIME INTEGER NOT NULL, LAT REAL NOT NULL, LONG REAL NOT NULL, ACC REAL NOT NULL, ALT REAL NOT NULL, SENT INTEGER DEFAULT 0)";
-    private static final String CREATE_BDD_NET = "CREATE TABLE net (ID INTEGER PRIMARY KEY AUTOINCREMENT, STARTTIME INTEGER NOT NULL, ENDTIME INTEGER NOT NULL, NLOCS INTEGER NOT NULL, LAT REAL NOT NULL, LONG REAL NOT NULL)";
+    //cette table "net" sert à monitorer le network, uniquement
+    private static final String CREATE_BDD_NET = "CREATE TABLE net (ID INTEGER PRIMARY KEY AUTOINCREMENT, ASYNCID INTEGER NOT NULL, STARTTIME INTEGER NOT NULL, ENDTIME INTEGER NOT NULL, HTTPREPLY INTEGER NOT NULL, NLOCS INTEGER NOT NULL, LAT REAL NOT NULL, LONG REAL NOT NULL)";
     
     private SQLiteDatabase bdd;
     private TelephonyManager telphMgr;
@@ -68,7 +69,21 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 
 	public JSONArray getJsonOfLocs() {
 		bdd = this.getWritableDatabase();
-		Cursor cursor = bdd.query("loc", null, "SENT = 0", null, null, null, null, null);
+		
+		//Récupérer le plus grand fixtime de la bdd
+		long greatest_fixtime = 0;
+		Cursor cursor_fxtm = bdd.query("loc", null, null, null, null, null, "FIXTIME DESC", null);
+		if (cursor_fxtm != null) {
+			if (cursor_fxtm.moveToNext()) greatest_fixtime = cursor_fxtm.getLong(1);
+			}	
+		//Log.d(TAG, "fixtimeLePlusRecent=" + greatest_fixtime);
+		int age_maximum_des_fixtimes = 120; //en secondes
+		long oldest_fixtime_wanted = greatest_fixtime - age_maximum_des_fixtimes;
+		String[] maSelectionArgs = new String[1];
+		maSelectionArgs[0] = String.valueOf(oldest_fixtime_wanted);
+		
+		//Query loc sent=0 et fixtime pas plus vieux que age_maximum_des_fixtimes
+		Cursor cursor = bdd.query("loc", null, "SENT = 0 AND FIXTIME > ?", maSelectionArgs, null, null, null, null);
 		JSONArray jsonFinal = new JSONArray();
        
        if (cursor != null) { 
@@ -119,8 +134,7 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 				}
 	}
 	
-	public void logNet(long starttime, long endtime, JSONArray le_json){
-		double lat = 0.0 , lng = 0.0;
+	public void logNet(int async_id, long starttime, long endtime, double lat, double lng, int nlocs, String error_code){
 
 		int cellid = -1; //par défault
         int lac = -1;
@@ -168,48 +182,22 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 			cellid = 0; //code pour se rappeler que cellid est vide (genre métro)
 		}
 		
-		Log.d(TAG, "mabdd logNet " + "cellid=" + cellid + "  mnc=" + mnc + "   mcc=" + mcc + "  lac=" + lac + "  radio=" + radio);
+		Log.d(TAG, "Ma bdd logNet " + "cellid=" + cellid + "  mnc=" + mnc + "   mcc=" + mcc + "  lac=" + lac + "  radio=" + radio);
 		
-		
-		
-		int index = idx_of_biggest_fixtime(le_json);
-		
-		try {
-			JSONObject locMaxFixtime = le_json.getJSONObject(index);		
-			lat = locMaxFixtime.getDouble("lat");
-			lng = locMaxFixtime.getDouble("long");
-		} catch (JSONException e) { }
-		
-		
+		//int http_result = error_code.equals("OK") ? 1 : 0;
+	
+		values.put("ASYNCID", async_id);
 		values.put("STARTTIME", starttime);
 		values.put("ENDTIME", endtime);
-		values.put("NLOCS", le_json.length());
+		values.put("HTTPREPLY", error_code.equals("OK") ? 1 : 0);		
+		values.put("NLOCS", nlocs);
 		values.put("LAT", lat);
 		values.put("LONG", lng);
 		bdd.insert("net", null, values);
 	}
 	
 	
-	/*Quel est l'index dans le JSONArray de la loc avec le plus grand fixtime (donc le plus récent au moment de l'envoi, pour savoir où ça s'est passé*/
-	public int idx_of_biggest_fixtime(JSONArray le_json) {
-			int index_biggest_fixtime = 0;
-			long max_fixtime = 0;
-			
-			//Log.d(TAG, "mabdd idx_of_biggest_fixtime");
-			
-			for (int i=0 ; i<le_json.length() ; i++) {
-				try {
-					JSONObject oneItem = le_json.getJSONObject(i);
-					long current_fixtime = oneItem.getLong("fixtime");
-					if (current_fixtime > max_fixtime) 
-						{	
-							max_fixtime = current_fixtime;
-							index_biggest_fixtime = i;
-						}
-					} catch (JSONException e) { }
-			}
-			return index_biggest_fixtime;			
-	}
+
 	
 	
 }

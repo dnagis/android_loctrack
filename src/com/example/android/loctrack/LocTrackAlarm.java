@@ -51,11 +51,14 @@ public class LocTrackAlarm extends Service {
 	
 	private BaseDeDonnees maBDD;
 	
+	private int async_id; //identifier each asynctask
+	
  
     @Override
     public void onCreate() {
 		Log.d(TAG, "onCreate dans LocTrackAlarm");	
-		maBDD = new BaseDeDonnees(this);		
+		maBDD = new BaseDeDonnees(this);
+		async_id = 0;		
     }
     
     @Override
@@ -67,8 +70,11 @@ public class LocTrackAlarm extends Service {
 		
 		JSONArray leJson = maBDD.getJsonOfLocs();		
 		
-		//POST Request, déporté dans AsyncTask sinon erreuur runtime android.os.NetworkOnMainThreadException
-		new PostRequestTask().execute(leJson);	
+		//POST Request, déporté dans AsyncTask sinon erreur runtime android.os.NetworkOnMainThreadException
+		if (leJson.length() != 0) {
+			async_id++;
+			new PostRequestTask().execute(leJson);	
+		}
 				
 		return START_NOT_STICKY;
 	}
@@ -89,11 +95,12 @@ public class LocTrackAlarm extends Service {
 	private class PostRequestTask extends AsyncTask<JSONArray,Void,JSONArray> {
 		//https://alvinalexander.com/android/asynctask-examples-parameters-callbacks-executing-canceling
 		long startTime, endTime;
+		double lat, lng;
+		String error_code = "HTTP_REPLY_NON_INITIALISEE";
 		
-    
 	    @Override
 	    protected JSONArray doInBackground(JSONArray... params) {
-			String error_code = "HTTP_REPLY_NON_INITIALISEE";
+			
 			JSONArray mon_json = params[0];
 			startTime = System.currentTimeMillis();
 			Log.d(TAG, "PostRequestTask doInBackground le json qu'on send= " + mon_json.toString());
@@ -127,6 +134,14 @@ public class LocTrackAlarm extends Service {
 	            Log.d(TAG, "IOException: " + ioe);
 	        }
 	        
+	        //on récup la dernière latlng pour monitorer le network
+	        int index = idx_of_biggest_fixtime(mon_json);
+			try {
+				JSONObject locMaxFixtime = mon_json.getJSONObject(index);		
+				lat = locMaxFixtime.getDouble("lat");
+				lng = locMaxFixtime.getDouble("long");
+			} catch (JSONException e) { }
+		        
 	        if (error_code.equals("OK")) {
 				return mon_json;
 			} else { 
@@ -135,21 +150,39 @@ public class LocTrackAlarm extends Service {
 			}
 	    }
 	    
+	    //récupère ce qui est returned par doInBackground
 	    @Override
 	    protected void onPostExecute(JSONArray le_json)	{
-			//Log.d(TAG, "onPostExecute -- le_json passé = " + le_json.toString());
+			//Log.d(TAG, "onPostExecute -- le_json returned par doInBackground = " + le_json.toString());
 			endTime = System.currentTimeMillis();
+			maBDD.logNet(async_id, startTime, endTime, lat, lng, le_json.length(), error_code);
 			//Log.d(TAG, "PostRequestTask startTime=" + startTime + "   endTime=" + endTime);
-			if (le_json.length() != 0) 
-				{
-					maBDD.markAsSent(le_json);
-					maBDD.logNet(startTime, endTime, le_json);
-					
-				}
+			if (le_json.length() != 0) {
+				maBDD.markAsSent(le_json);				
+			}
 		}
 	}
 	
-
+	/*Quel est l'index dans le JSONArray de la loc avec le plus grand fixtime (donc le plus récent au moment de l'envoi, pour savoir où ça s'est passé, pour monitorer le network*/
+	public int idx_of_biggest_fixtime(JSONArray le_json) {
+			int index_biggest_fixtime = 0;
+			long max_fixtime = 0;
+			
+			//Log.d(TAG, "idx_of_biggest_fixtime");
+			
+			for (int i=0 ; i<le_json.length() ; i++) {
+				try {
+					JSONObject oneItem = le_json.getJSONObject(i);
+					long current_fixtime = oneItem.getLong("fixtime");
+					if (current_fixtime > max_fixtime) 
+						{	
+							max_fixtime = current_fixtime;
+							index_biggest_fixtime = i;
+						}
+					} catch (JSONException e) { }
+			}
+			return index_biggest_fixtime;			
+	}
 	
 	
 	

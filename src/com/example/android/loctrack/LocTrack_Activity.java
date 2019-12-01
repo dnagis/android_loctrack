@@ -60,7 +60,6 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 	private Button btn_start, btn_stop;
 	private TextView textview_1, textview_2;
 
-	
     /**
      * Called with the activity is first created.
      */
