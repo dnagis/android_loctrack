@@ -20,5 +20,6 @@
     <string name="textview2_text">Loc: En attente de fix...</string>
     <string name="btn_start">Lancer</string>
     <string name="btn_stop">Stop</string>
+    <string name="btn_exportdb">exportDB</string>
 
 </resources>

@@ -26,6 +26,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import java.text.SimpleDateFormat;
 
+
 import android.content.Context;
 import android.content.Intent;
 
@@ -130,7 +131,6 @@ public class LocTrack_Activity extends Activity implements LocationListener {
     public void ActionPressBouton_start(View v) {
 		Log.d(TAG, "press bouton start");
 		if (!runningSession) launch_le_bousin();
-
 	}
     
     //bouton stop
@@ -147,6 +147,12 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 		runningSession = false;
 		btn_start.setBackgroundDrawable(default_btn);
 	}
+	    
+	//bouton exportdb
+    public void ActionPressBouton_exportdb(View v) {
+		//Log.d(TAG, "press bouton exportdb");
+		if(maBDD != null) maBDD.exporteBD();
+		}
 	
 	
 	/**

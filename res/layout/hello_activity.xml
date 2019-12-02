@@ -48,5 +48,13 @@
      android:layout_alignParentRight="true"
      android:text="@string/btn_stop"
      android:onClick="ActionPressBouton_stop" />
+     
+     <Button
+     android:id="@+id/btn_exportdb"
+     android:layout_height="wrap_content"
+     android:layout_width="wrap_content"
+     android:layout_alignParentBottom="true"
+     android:text="@string/btn_exportdb"
+     android:onClick="ActionPressBouton_exportdb" />
 
 </RelativeLayout>  

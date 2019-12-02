@@ -3,6 +3,8 @@ package com.example.android.loctrack;
 import android.content.Context;
 import android.util.Log;
 import java.util.List;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
@@ -20,6 +22,12 @@ import android.telephony.CellInfoLte;
 import android.telephony.CellInfoWcdma;
 import android.telephony.TelephonyManager;
 import android.telephony.SignalStrength;
+
+import java.io.File;
+import android.os.Environment;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 
 
 //sqlite3 /data/data/com.example.android.loctrack/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT, ALTACC, SENT from loc;"
@@ -195,6 +203,38 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 		values.put("LAT", lat);
 		values.put("LONG", lng);
 		bdd.insert("net", null, values);
+	}
+	
+	
+	//il faut aller bricoler la permission dans les paramètres pendant que l'appli tourne... ligne commande inutile
+	//il faut créer le dir de destination à la mano
+	//sur le motorola blanc Z play XT1635-02 aller dans fichiers et dans paramètres: "afficher mém. stock. int."
+	//
+	public void exporteBD() {
+		Log.d(TAG, "bdd exportdb");
+		 try {
+                File sd = Environment.getExternalStorageDirectory();
+                File data = Environment.getDataDirectory();
+				
+				Log.d(TAG, "bdd exportdb sd="+sd.getPath());
+				SimpleDateFormat sdf = new SimpleDateFormat("ddMMyy_HHmmss");
+				
+				
+				String currentDBPath= "/data/com.example.android.loctrack/databases/loc.db"; 
+				String backupDBPath  = "/loctrack/loc"+ sdf.format(new Date()) +".db";
+				File currentDB = new File(data, currentDBPath);
+				File backupDB = new File(sd, backupDBPath);
+
+				FileChannel src = new FileInputStream(currentDB).getChannel();
+				FileChannel dst = new FileOutputStream(backupDB).getChannel();
+				dst.transferFrom(src, 0, src.size());
+				src.close();
+				dst.close();
+				Log.d(TAG, "exporteBD="+backupDB.toString());
+                    
+            } catch (Exception e) {
+				Log.d(TAG, "erreur exporteBD="+e.toString());
+            }
 	}
 	
 	
