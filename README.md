@@ -29,7 +29,6 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 * Récolte des données network:
 	- Traquer les failures: n° identifiant unique pour voir si je les ai toutes (certaines pas finies?), 
 	- Données GSM: dans BaseDeDonnees.java -> entrer dans la bdd, si tu penses que c'est important.
-	- Sortir la loc.db facilement sur un tel production build ce serait bien... ->  balancer un json sur une route de kimsufi? une astuce sinon adb?? ou un fichier txt sur la sdcard? faire simple+++
 * Niveau Batterie / altitude accuracy (?)
 	- ajouter -> alt acc marche, mais pas denvoi pour linstant, pas géré le front
 	- faire un howto pour chaque nouvel ajout ultérieur (car ça modifie aussi serveur et front...)	
@@ -38,7 +37,6 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 	ne faudrait que le dernier, ou alors noter de ne pas envoyer les autres? Il faudrait pouvoir utiliser une librairie géographique. Et le premier endpoint
 	serait de détecter une pause. Quoi faire quand on la détecte: on verra après (modif de la fréquence des requetes GPS? Comment gérer les envois?).
 
-* Le nom du fichier de layout (res/layout/hello_activity.xml) est vraiment moche!!!
 * UI (https://www.androidauthority.com/android-ui-views-1018249/)
 	- dialog de confirmation pour stop
 * Fixtime: location.getTime() -> provenance: system ou GNSS??

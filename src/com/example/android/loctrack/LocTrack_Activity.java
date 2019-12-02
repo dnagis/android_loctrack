@@ -70,7 +70,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         super.onCreate(savedInstanceState);
 
         // Set the layout for this activity.  You can find it res/layout/hello_activity.xml
-        View view = getLayoutInflater().inflate(R.layout.hello_activity, null);
+        View view = getLayoutInflater().inflate(R.layout.loctrack_activity, null);
         setContentView(view);
         
         btn_start = findViewById(R.id.btn_start);
@@ -167,7 +167,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         maBDD.logFix(location.getTime()/1000, location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude(), location.getVerticalAccuracyMeters());   
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM HH:mm:ss");
         textview_1.setText(sdf.format(location.getTime()));
-        textview_2.setText(""+location.getLatitude()+","+location.getLongitude()+" -- "+getFormattedLocationInDegree(location.getLatitude(), location.getLongitude()));
+        textview_2.setText(""+location.getLatitude()+" , "+location.getLongitude()+"\n"+getFormattedLocationInDegree(location.getLatitude(), location.getLongitude()));
     }
         
 	@Override

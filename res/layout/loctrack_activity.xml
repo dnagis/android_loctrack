@@ -31,6 +31,7 @@
     android:layout_centerHorizontal="true"
     android:layout_below="@+id/textview_1"   
     android:textSize="18sp"
+    android:gravity="center"
     android:text="@string/textview2_text" />
     
     
