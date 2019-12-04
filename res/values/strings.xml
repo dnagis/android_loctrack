@@ -18,6 +18,7 @@
 
     <string name="textview1_text">Time: En attente de fix...</string>
     <string name="textview2_text">Loc: En attente de fix...</string>
+    <string name="textview3_text">http_reply: en attente de result</string>
     <string name="btn_start">Lancer</string>
     <string name="btn_stop">Stop</string>
     <string name="btn_exportdb">exportDB</string>

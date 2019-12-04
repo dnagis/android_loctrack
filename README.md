@@ -20,9 +20,11 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 	- à chaque déclenchement d'Alarm dans le onStartCommand() 
 		- récupère un json des locs SENT=0 et dont le fixtime est pas plus vieux que age_maximum_des_fixtimes (getJsonOfLocs dans BaseDeDonnees.java)
 		- si le json est pas vide: lance une asyncTask requete POST http envoi du JSON, et à la fin (onPostExecute) 
-			passe à SENT=1 les rows du json reçu par l'async task dans la table loc de la BDD
-			écrit dans la table net de la BDD le n° de l'async, les times de début et de fin de l'async, le nombre de locs, la latlng du fixtime le plus grand dans le json (donc la position la plus fraiche au moment
+			- passe à SENT=1 les rows du json reçu par l'async task dans la table loc de la BDD
+			- écrit dans la table net de la BDD le n° de l'async, les times de début et de fin de l'async, le nombre de locs, la latlng du fixtime le plus grand dans le json (donc la position la plus fraiche au moment
 			du début de l'envoi)
+			- update une textview de l'UI en appelant une méthode static de l'activité principale (oui c'est possible, voir les commentaires au dessus de cette methode "updateSent")
+			
 
 # # ToDo list
 

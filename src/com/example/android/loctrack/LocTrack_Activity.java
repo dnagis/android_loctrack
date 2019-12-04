@@ -25,6 +25,7 @@ import android.util.Log;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import java.text.SimpleDateFormat;
+import java.lang.System;
 
 
 import android.content.Context;
@@ -59,8 +60,9 @@ public class LocTrack_Activity extends Activity implements LocationListener {
     private boolean runningSession; //default to false
     private Drawable default_btn;
 	private Button btn_start, btn_stop;
-	private TextView textview_1, textview_2;
-
+	TextView textview_1, textview_2;
+	static TextView textview_3;
+	
     /**
      * Called with the activity is first created.
      */
@@ -78,6 +80,8 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         btn_stop = findViewById(R.id.btn_stop);
         textview_1 = findViewById(R.id.textview_1);       
         textview_2 = findViewById(R.id.textview_2); 
+        textview_3 = findViewById(R.id.textview_3);
+ 
 
         /*Au départ j'avais ça: ça lançait automatiquement dans onCreate() mais qu'une première fois, pas aux passages ultérieurs
          * marchait très bien. Après je suis passé au lancement avec un bouton.  
@@ -88,7 +92,21 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         }*/
     }
     
-    
+    /*@Override
+    public void onResume() {
+		super.onResume();
+	}*/
+	
+	/**Oui: cette méthode qui update une TextView est appelée depuis LocTrackAlarm. Le mot clé c'est static, et l'astuce c'est que la textview
+	 * à update doit être static elle aussi! **/
+	public static void updateSent(long last_succesful_send) {
+		//Log.d(TAG, "onResume dernier succesful send = " + LocTrackAlarm.last_succesful_send);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM HH:mm:ss");	
+		textview_3.setText("LAST SENT: "+ sdf.format(last_succesful_send));
+	}
+	
+	
+	
     public void launch_le_bousin() {
 		
 		// Si c'est la première fois qu'on passe on récup une handle vers le location manager
@@ -154,6 +172,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 		if(maBDD != null) maBDD.exporteBD();
 		}
 	
+
 	
 	/**
 	 *
@@ -166,7 +185,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         Log.d(TAG, location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getVerticalAccuracyMeters() + ",  "  + location.getTime());
         maBDD.logFix(location.getTime()/1000, location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude(), location.getVerticalAccuracyMeters());   
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM HH:mm:ss");
-        textview_1.setText(sdf.format(location.getTime()));
+        textview_1.setText("LAST LOC: "+ sdf.format(location.getTime()));
         textview_2.setText(""+location.getLatitude()+" , "+location.getLongitude()+"\n"+getFormattedLocationInDegree(location.getLatitude(), location.getLongitude()));
     }
         

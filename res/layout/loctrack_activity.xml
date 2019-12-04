@@ -34,6 +34,14 @@
     android:gravity="center"
     android:text="@string/textview2_text" />
     
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/textview_3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_below="@+id/textview_2"   
+    android:textSize="18sp"
+    android:gravity="center"
+    android:text="@string/textview3_text" />
     
      <Button
      android:id="@+id/btn_start"

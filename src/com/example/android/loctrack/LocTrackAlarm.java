@@ -43,6 +43,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 
 
+
+
 public class LocTrackAlarm extends Service {
 	
 	private static final String TAG = "LocTrack";
@@ -53,12 +55,14 @@ public class LocTrackAlarm extends Service {
 	
 	private int async_id; //identifier each asynctask
 	
+
+	
  
     @Override
     public void onCreate() {
 		Log.d(TAG, "onCreate dans LocTrackAlarm");	
 		maBDD = new BaseDeDonnees(this);
-		async_id = 0;		
+		async_id = 0;	
     }
     
     @Override
@@ -158,7 +162,8 @@ public class LocTrackAlarm extends Service {
 			maBDD.logNet(async_id, startTime, endTime, lat, lng, le_json.length(), error_code);
 			//Log.d(TAG, "PostRequestTask startTime=" + startTime + "   endTime=" + endTime);
 			if (le_json.length() != 0) {
-				maBDD.markAsSent(le_json);				
+				maBDD.markAsSent(le_json);	
+				LocTrack_Activity.updateSent(endTime);
 			}
 		}
 	}
