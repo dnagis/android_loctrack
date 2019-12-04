@@ -64,7 +64,8 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 	static TextView textview_3;
 	
     /**
-     * Called with the activity is first created.
+     * manifest attribut d'activity pour prevent passage ici quand rotation:
+     * android:configChanges="orientation|screenLayout|screenSize"
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
