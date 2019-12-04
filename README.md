@@ -28,12 +28,12 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 
 # # ToDo list
 
+* Problème si: lancer, rotation de l'écran paysage, et que je revienne ou pas en portrait: lancer: redevient gris, et je lance une deuxième fois, et du coup des doublons
 * Récolte des données network:
 	- Traquer les failures: n° identifiant unique pour voir si je les ai toutes (certaines pas finies?), 
 	- Données GSM: dans BaseDeDonnees.java -> entrer dans la bdd, si tu penses que c'est important.
-* Niveau Batterie / altitude accuracy (?)
-	- ajouter -> alt acc marche, mais pas denvoi pour linstant, pas géré le front
-	- faire un howto pour chaque nouvel ajout ultérieur (car ça modifie aussi serveur et front...)	
+* Niveau Batterie 
+	- en profiter pour faire un howto pour chaque nouvel ajout ultérieur (car ça modifie aussi serveur et front...)	
 * Maintenant que je n'envoie que des locs récentes, mark as unsent à 2 quand bouton stop n'a plus de sens. Enlever pour simplifier.
 * Détection pause/repart: quand je m'arrête: j'ai pas envie que ma bdd soit bloatée de points les uns à côté des autres... Quand points super proches, il
 	ne faudrait que le dernier, ou alors noter de ne pas envoyer les autres? Il faudrait pouvoir utiliser une librairie géographique. Et le premier endpoint
