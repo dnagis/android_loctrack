@@ -36,13 +36,13 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 
 * Niveau Batterie: log bdd et upload
 	- en profiter pour faire un howto pour chaque nouvel ajout ultérieur (car ça modifie aussi serveur et front...)	
+* Text input pour du tooltip affiché
 * Maintenant que je n'envoie que des locs récentes, mark as unsent à 2 quand bouton stop n'a plus de sens. Enlever pour simplifier.
 * Détection pause/repart: quand je m'arrête: j'ai pas envie que ma bdd soit bloatée de points les uns à côté des autres... Quand points super proches, il
 	ne faudrait que le dernier, ou alors noter de ne pas envoyer les autres? Il faudrait pouvoir utiliser une librairie géographique. Et le premier endpoint
 	serait de détecter une pause. Quoi faire quand on la détecte: on verra après (modif de la fréquence des requetes GPS? Comment gérer les envois?).
 * UI / menu (https://www.androidauthority.com/android-ui-views-1018249/)
 	- dialog de confirmation pour stop
-	- bouton pour vider la bdd
 	- Permettre choix fréquence requestLocations / fréquence POST
 * Fixtime: location.getTime() -> provenance: system ou GNSS??
 	- essayé: fausse heure sur tel + empêché de récup heure sur réseau -> les fixtimes restent à la bonne heure! -> noter dans le code et enlever ça d'ici
