@@ -36,6 +36,8 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 
 * Niveau Batterie: log bdd et upload
 	- en profiter pour faire un howto pour chaque nouvel ajout ultérieur (car ça modifie aussi serveur et front...)	
+* Un marqueur de début de session sans ajouter une colonne: encoder dans latlng: à partir du 5ème après la virgule si 123 et 123 dans lat et dans lng c'est une 
+	nouvelle session (comme ça quand je lance loctrack j'ai pas tout depuis XXX) 43.9346204,3.70881958 et 43.9346123,3.70881123 ça change quasi rien
 * un feedback toast pour savoir si exportDB a fonctionné
 * Text input pour du tooltip affiché
 * Maintenant que je n'envoie que des locs récentes, mark as unsent à 2 quand bouton stop n'a plus de sens. Enlever pour simplifier.
@@ -48,7 +50,7 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 * Fixtime: location.getTime() -> provenance: system ou GNSS??
 	- essayé: fausse heure sur tel + empêché de récup heure sur réseau -> les fixtimes restent à la bonne heure! -> noter dans le code et enlever ça d'ici
 * Identifiant unique pour du multi-utilisateur
-	- a l'installation la première fois?
+	- random a l'installation la première fois?
 	- commencer par modèle pour ne pas se prendre la tête?
 * Données récoltées en bluetooth (esp32 / capteur)
 * Permissions check au startup: pour utilisation "commerciale"
