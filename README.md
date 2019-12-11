@@ -36,6 +36,7 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 
 * Niveau Batterie: log bdd et upload
 	- en profiter pour faire un howto pour chaque nouvel ajout ultérieur (car ça modifie aussi serveur et front...)	
+* un feedback toast pour savoir si exportDB a fonctionné
 * Text input pour du tooltip affiché
 * Maintenant que je n'envoie que des locs récentes, mark as unsent à 2 quand bouton stop n'a plus de sens. Enlever pour simplifier.
 * Détection pause/repart: quand je m'arrête: j'ai pas envie que ma bdd soit bloatée de points les uns à côté des autres... Quand points super proches, il
