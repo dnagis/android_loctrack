@@ -55,8 +55,7 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_BDD_MAIN);
-        db.execSQL(CREATE_BDD_NET);
-        
+        db.execSQL(CREATE_BDD_NET);        
     }
 
     @Override
@@ -132,6 +131,12 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
                 } catch (JSONException e) { }
             }		
 	}
+	
+	public void deleteAll(){
+			bdd = this.getWritableDatabase();
+			bdd.delete("loc", null, null);
+			bdd.delete("net", null, null);		
+		}
 	
 	//passer les SENT=0 à SENT=2 (arrêt de session, pour ne pas de retrouver dans la session d'après avec des SENT=0)
 	public void forgetUnsent() {

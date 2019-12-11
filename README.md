@@ -8,7 +8,11 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 
 * LocTrack_Activity.java:
 	- boolean sessionRunning
-	- bouton start() -> si sessionRunning = false (par défaut boolean sont false) -> launch_le_bousin qui:
+	- bouton start() -> si sessionRunning = false (par défaut boolean sont false) 
+		- Dialog (attention écraser données) -> OK / cancel
+		si OK:
+		launch_le_bousin() qui:
+		- delete all dans les deux tables de la bdd
 		- Crée la base de données pour les locs maBDD = new BaseDeDonnees(this); -> onCreate() de cette classe
 		- Crée si n'existe pas un locationManager -> dans sa callback onLocationChanged() écrit dans la base de données la loc (BaseDeDonnees.java)
 		- Crée si n'existe pas un AlarmManager pour déclencher LocTrackAlarm régulièrement

@@ -39,6 +39,13 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.os.SystemClock;
 
+//dialog
+import android.app.DialogFragment;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.app.FragmentManager;
+
 
 
 
@@ -114,6 +121,7 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 		if(mLocationManager == null) mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_MIN_TIME, LOC_MIN_DIST, this);
 		
+		if(maBDD != null) maBDD.deleteAll();
 		maBDD = new BaseDeDonnees(this);
 		
 		/**Create a PendingIntent to trigger a startService()
@@ -149,7 +157,12 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 	//bouton start
     public void ActionPressBouton_start(View v) {
 		Log.d(TAG, "press bouton start");
-		if (!runningSession) launch_le_bousin();
+		
+		if (!runningSession) {
+			DialogFragment newFragment = new DialogNvlleSession();
+			newFragment.show(getFragmentManager(), "ce texte va où???");
+		}
+
 	}
     
     //bouton stop
@@ -202,6 +215,36 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 	}
 	
+	
+	/** https://developer.android.com/guide/topics/ui/dialogs */
+    public static class DialogNvlleSession extends DialogFragment {
+		DialogNvlleSession mFragment = this; 
+		
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return new AlertDialog.Builder(getActivity())
+                    .setMessage("nouvelle session: écraser les données existantes?")
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+									Log.d(TAG, "press dialog OK");
+									//launch_le_bousin();	Cannot make a static reference to the non-static method launch_le_bousin() from the type LocTrack_Activity								
+									((LocTrack_Activity)getActivity()).launch_le_bousin();
+                                }
+                            }
+                    )
+                    .setNegativeButton("cancel",
+		                    new DialogInterface.OnClickListener() {
+		                        public void onClick(DialogInterface dialog, int whichButton) {
+		                            Log.d(TAG, "cancel");
+		                        }
+		                    }
+                    )
+                    .create();
+        }
+    }	
+	
+	
 	public static String getFormattedLocationInDegree(double latitude, double longitude) {
         int latSeconds = (int) Math.round(latitude * 3600);
         int latDegrees = latSeconds / 3600;
@@ -220,7 +263,11 @@ public class LocTrack_Activity extends Activity implements LocationListener {
         return  Math.abs(latDegrees) + "°" + latMinutes + "'" + latSeconds
                 + "\"" + latDegree +" "+ Math.abs(longDegrees) + "°" + longMinutes
                 + "'" + longSeconds + "\"" + lonDegrees;
-
 	}
+	
+	
+	
+	
+
 }
 
