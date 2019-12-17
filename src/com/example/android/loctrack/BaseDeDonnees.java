@@ -215,8 +215,9 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 	//il faut créer le dir de destination à la mano
 	//sur le motorola blanc Z play XT1635-02 aller dans fichiers et dans paramètres: "afficher mém. stock. int."
 	//
-	public void exporteBD() {
+	public long exporteBD() {
 		Log.d(TAG, "bdd exportdb");
+		long rt = 0;
 		 try {
                 File sd = Environment.getExternalStorageDirectory();
                 File data = Environment.getDataDirectory();
@@ -233,13 +234,17 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 				FileChannel src = new FileInputStream(currentDB).getChannel();
 				FileChannel dst = new FileOutputStream(backupDB).getChannel();
 				dst.transferFrom(src, 0, src.size());
+				Log.d(TAG, "bdd exportdb size="+src.size());
+				rt = src.size(); 
 				src.close();
 				dst.close();
 				Log.d(TAG, "exporteBD="+backupDB.toString());
-                    
+                   
             } catch (Exception e) {
 				Log.d(TAG, "erreur exporteBD="+e.toString());
+				rt = 0;
             }
+            return rt;
 	}
 	
 	

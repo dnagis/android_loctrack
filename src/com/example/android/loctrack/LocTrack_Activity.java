@@ -21,6 +21,7 @@ import android.view.WindowManager;
 
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.util.Log;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -183,7 +184,10 @@ public class LocTrack_Activity extends Activity implements LocationListener {
 	//bouton exportdb
     public void ActionPressBouton_exportdb(View v) {
 		//Log.d(TAG, "press bouton exportdb");
-		if(maBDD != null) maBDD.exporteBD();
+		if(maBDD != null) {
+			long file_size = maBDD.exporteBD();
+			Toast.makeText(this, "export size="+file_size, Toast.LENGTH_SHORT).show();
+			}
 		}
 	
 
