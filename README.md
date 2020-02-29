@@ -59,6 +59,7 @@ La partie Http sur Alrm vient de git@github.com:dnagis/android_url_alrm.git
 	- appli
 
 
-# # Littérature
+# # Littérature et réseaux sociaux
 
 * Grosse discussion C2C post simon gauthier https://forum.camptocamp.org/t/geolocalisation-smartphone/249306/67
+* Février 2020 je me suis un peu lâché sur ce post: https://forum.camptocamp.org/t/geolocalisation-durant-un-periple/257416/77
